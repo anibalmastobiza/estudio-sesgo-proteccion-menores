@@ -329,18 +329,30 @@ y no toca esa componente. Duplicar la muestra de 600 a 1200 sube la potencia del
 efecto de fenotipo de .43 a .55; triplicar el material de 7 a 20 caras la sube de
 .53 a .73 sin tocar la muestra.
 
-### 11.3 Lo que esto obliga a declarar por adelantado
+### 11.3 Efecto mínimo detectable
 
-**La interacción no está potenciada para efectos pequeños.** Con el material
-disponible, una interacción de d = 0.20 se detectaría entre el 13 % y el 31 % de
-las veces. Un resultado no significativo en H6 **no será evidencia de ausencia
-de interacción**, y así se informará: se dará el intervalo de confianza y se
-dirá qué tamaños quedan descartados y cuáles no.
+Con 900 participantes y el material real, el efecto más pequeño que se detecta
+con potencia .80:
 
-El efecto de expresión es el mejor potenciado, el de fenotipo queda en un rango
-aceptable en el escenario optimista y justo en el pesimista.
+| | Fenotipo | Expresión | Interacción |
+|---|---|---|---|
+| tau = 0.10 | d = 0.35 | d = 0.35 | d = 0.50 |
+| tau = 0.20 | d = 0.45 | d = 0.50 | d = 0.65 |
 
-### 11.4 Decisión
+Esta es la tabla que hay que mirar antes de interpretar cualquier resultado nulo.
+
+### 11.4 Lo que esto obliga a declarar por adelantado
+
+**La interacción solo se detecta si es grande.** Hace falta d = 0.50 en el
+escenario optimista y d = 0.65 en el pesimista, y una interacción de d = 0.20 se
+detectaría entre el 13 % y el 31 % de las veces. Un resultado no significativo en
+H6 **no será evidencia de ausencia de interacción**, y así se informará: se dará
+el intervalo de confianza y se dirá qué tamaños quedan descartados y cuáles no.
+
+Los dos efectos principales quedan en un rango razonable: se detectan si son de
+tamaño pequeño a medio, y no si son muy pequeños.
+
+### 11.5 Decisión
 
 **N = 900 participantes válidos**, 225 por casilla. Con una retención esperada
 del 88 al 92 %, hay que contratar entre 980 y 1030 cuestionarios completos.

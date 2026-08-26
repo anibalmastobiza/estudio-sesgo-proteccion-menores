@@ -84,8 +84,10 @@ Ejecutado y comprobado:
 - Estímulos instalados y emparejados. Dentro de cada nivel de expresión, ninguna
   variable de emoción difiere entre fenotipos más de 0,16 desviaciones típicas.
 - Simulación de potencia con 500 réplicas por escenario. Error de tipo I entre
-  .028 y .068. **La interacción está infrapotenciada** y así se declara en el
-  preregistro.
+  .028 y .068. Con 900 participantes el efecto mínimo detectable es d = 0.35 a
+  0.45 en fenotipo, d = 0.35 a 0.50 en expresión y **d = 0.50 a 0.65 en la
+  interacción**, que por tanto solo se detecta si es grande. Así se declara en el
+  preregistro: un nulo en la interacción no será evidencia de ausencia.
 - Pipeline de análisis completo sobre datos simulados: recupera los efectos
   inyectados de fenotipo y expresión, y no recupera el de interacción, que es
   justo lo que la simulación de potencia predice.
