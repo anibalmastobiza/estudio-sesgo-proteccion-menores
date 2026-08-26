@@ -66,8 +66,10 @@ Dos cosas que el material **no** permite, documentadas en
 ## Puesta en marcha
 
 1. **Google Sheets**: sigue [`apps-script/INSTALACION.md`](apps-script/INSTALACION.md).
-   La hoja ya está creada; falta desplegar el Web App y pegar su URL en
-   `docs/js/config.js`. Verifica con `bash apps-script/verificar.sh "URL"`.
+   La hoja "Estudio menores - respuestas" ya está creada en tu Drive con las 56
+   columnas. Falta pegar el receptor, desplegar el Web App y poner su URL en
+   `docs/js/config.js`. Verifica la conexión con
+   `bash apps-script/verificar.sh "URL"`.
 2. **Análisis**: `Rscript analisis/00_simular_datos.R` y los tres siguientes
    validan todo el pipeline antes de recoger un solo dato real.
 3. Mientras `ENDPOINT` esté vacío, la portada avisa de que es una versión de
