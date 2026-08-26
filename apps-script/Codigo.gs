@@ -11,9 +11,20 @@
  */
 
 // Debe coincidir con CONFIG.TOKEN en docs/js/config.js. Cadena vacía = sin comprobación.
+//
+// Un token aquí sirve de poco: el experimento es una página estática y cualquiera
+// puede leerlo en el código fuente. Solo evita que alguien que encuentre la URL
+// del servicio, sin haber visto la página, escriba en la hoja con un script
+// trivial. Se deja vacío a propósito, y las filas de broma se reconocen y se
+// borran a mano.
 var TOKEN = "";
 
 var HOJA = "respuestas";
+
+// Id de la hoja "Estudio menores - respuestas". Solo se usa si el script NO está
+// vinculado a la hoja, es decir, si se ha creado como proyecto independiente en
+// script.google.com en vez de desde Extensiones > Apps Script.
+var ID_HOJA = "19anStdR8m8QaATmn63aL7DowKZEDsTK48kZ-_1FaPyc";
 
 // Orden canónico de columnas. Las claves no listadas se añaden al final.
 var CABECERAS = [
@@ -89,8 +100,16 @@ function doGet(e) {
 
 /* ------------------------------------------------------------- internas */
 
-function hoja_() {
+function libro_() {
+  // Vinculado a la hoja o proyecto independiente: funciona de las dos maneras.
   var libro = SpreadsheetApp.getActiveSpreadsheet();
+  if (libro) return libro;
+  if (!ID_HOJA) throw new Error("El script no está vinculado a ninguna hoja y ID_HOJA está vacío.");
+  return SpreadsheetApp.openById(ID_HOJA);
+}
+
+function hoja_() {
+  var libro = libro_();
   var h = libro.getSheetByName(HOJA);
   if (h) return h;
 
@@ -134,7 +153,7 @@ function buscarFila_(hoja, id) {
  * Estudio normativo: formato largo, una fila por (juez x imagen).
  */
 function norming_(cuerpo) {
-  var libro = SpreadsheetApp.getActiveSpreadsheet();
+  var libro = libro_();
   var h = libro.getSheetByName("norming");
   var cab = ["juez", "recibido_iso", "version_estimulos", "conjunto", "condicion", "ruta", "orden", "ms",
              "origen", "prototipicidad", "edad", "atractivo", "confiabilidad", "expresion", "realismo",
@@ -159,7 +178,7 @@ function respuesta_(obj) {
 
 function registrarError_(err, e) {
   try {
-    var libro = SpreadsheetApp.getActiveSpreadsheet();
+    var libro = libro_();
     var h = libro.getSheetByName("errores") || libro.insertSheet("errores");
     if (h.getLastRow() === 0) h.appendRow(["momento", "error", "cuerpo"]);
     h.appendRow([new Date(), String(err), e && e.postData ? e.postData.contents.slice(0, 4000) : ""]);
@@ -182,7 +201,7 @@ function prueba_() {
   Logger.log(doPost(falso).getContent());
 }
 
-/** Menú para exportar CSV listo para analisis/01_preparar.R */
+/** Menú para exportar CSV. Solo aparece si el script está vinculado a la hoja. */
 function onOpen() {
   SpreadsheetApp.getUi().createMenu("Estudio")
     .addItem("Exportar CSV a Drive", "exportarCSV")

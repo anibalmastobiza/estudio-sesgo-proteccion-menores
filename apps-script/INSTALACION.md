@@ -1,88 +1,73 @@
 # Conectar el estudio con Google Sheets
 
-Cinco minutos. Todo se hace desde tu cuenta de Google y no hace falta ninguna
-clave de API. El único paso que no se puede automatizar es el 4: desplegar un
-Web App exige aceptar permisos en tu propia cuenta, de forma interactiva.
+Todo lo que se podía dejar hecho está hecho. Queda un paso que exige tu cuenta
+de Google y no se puede automatizar: **desplegar el receptor como aplicación
+web**, porque Google pide aceptar los permisos en una pantalla que solo puedes
+pulsar tú.
 
-## 1. La hoja ya existe
+Son cuatro minutos. Cuando termines, pásame la URL y yo hago el resto.
 
-Está creada en tu Drive, con las 56 columnas del protocolo en la primera fila:
+## 1. Abre la hoja y su editor de scripts
 
-**Estudio menores - respuestas**
+Hoja: **Estudio menores - respuestas**
 https://docs.google.com/spreadsheets/d/19anStdR8m8QaATmn63aL7DowKZEDsTK48kZ-_1FaPyc/edit
 
-En tu Drive hay otra hoja marcada como `OBSOLETA`: era la del cuestionario largo
-de 33 ítems, anterior al recorte. No la uses. Puedes borrarla cuando quieras.
-
-Sirve igual cualquier hoja vacía: el receptor crea la pestaña `respuestas` y las
-cabeceras la primera vez que recibe algo, y si el libro tiene una sola pestaña la
-reutiliza y la renombra.
+Menú **Extensiones > Apps Script**. Se abre el editor en otra pestaña.
 
 ## 2. Pega el receptor
 
-1. En la hoja: **Extensiones > Apps Script**.
-2. Borra el contenido de `Código.gs` y pega entero [`Codigo.gs`](Codigo.gs).
-3. Si quieres protegerlo de envíos ajenos, cambia la primera línea:
-   ```javascript
-   var TOKEN = "una-cadena-larga-y-aleatoria";
-   ```
-   Genera una con:
-   ```bash
-   openssl rand -hex 24
-   ```
-4. Guarda con `Cmd+S`.
+Borra lo que haya en `Código.gs` y pega entero este archivo:
 
-## 3. Comprueba que escribe
+https://raw.githubusercontent.com/anibalmastobiza/estudio-sesgo-proteccion-menores/main/apps-script/Codigo.gs
 
-1. En el desplegable de funciones del editor, elige `prueba_` y pulsa **Ejecutar**.
-2. Google pedirá permisos la primera vez: **Revisar permisos**, tu cuenta,
-   **Configuración avanzada**, **Ir a (proyecto sin verificar)**, **Permitir**.
-   Es tu propio script accediendo a tu propia hoja.
-3. Vuelve a la hoja. Debe aparecer una fila `PRUEBA-...` en la pestaña
-   `respuestas`. Bórrala.
+Guarda con `Cmd+S`.
+
+## 3. Autoriza y comprueba que escribe
+
+1. En el desplegable de funciones elige **`prueba_`** y pulsa **Ejecutar**.
+2. Google pide permisos la primera vez. La ruta es:
+   **Revisar permisos** > tu cuenta > **Configuración avanzada** >
+   **Ir a (proyecto sin verificar)** > **Permitir**.
+   El aviso de "sin verificar" es normal: es tu propio script entrando en tu
+   propia hoja, no hay terceros.
+3. Vuelve a la hoja. Debe aparecer una fila `PRUEBA-...`. Bórrala.
+
+Si este paso funciona, lo demás ya está garantizado.
 
 ## 4. Despliega
 
-1. **Implementar > Nueva implementación**.
-2. Tipo: **Aplicación web**.
-3. Ejecutar como: **Yo**.
-4. Quién tiene acceso: **Cualquier usuario**.
-5. **Implementar**, y copia la **URL de la aplicación web**. Termina en `/exec`.
+**Implementar > Nueva implementación**
 
-## 5. Verifica la sincronización de punta a punta
+- Tipo: **Aplicación web** (el engranaje de la izquierda, si no aparece)
+- Ejecutar como: **Yo**
+- Quién tiene acceso: **Cualquier usuario**
 
-Desde la raíz del repositorio:
+**Implementar**, y copia la **URL de la aplicación web**. Termina en `/exec`.
+
+## 5. Pásame esa URL
+
+Con ella hago lo que queda, que es todo automatizable:
+
+- ponerla en `docs/js/config.js`
+- subir el número de caché de los `<script>`
+- publicar el cambio
+- ejecutar `apps-script/verificar.sh`, que envía una fila de prueba real
+- leer la hoja y confirmar que la fila ha llegado
+
+Si prefieres hacerlo tú, la comprobación es:
 
 ```bash
-bash apps-script/verificar.sh "PEGA_AQUI_LA_URL_QUE_TERMINA_EN_EXEC"
+bash apps-script/verificar.sh "TU_URL_QUE_TERMINA_EN_EXEC"
 ```
 
-Si pusiste token, añádelo como segundo argumento. El script consulta el
-servicio, envía una fila de prueba y vuelve a consultarlo. Termina con
-`SINCRONIZACION CORRECTA` si todo está bien, y con un mensaje concreto si no.
-Borra la fila `PRUEBA-...` antes de recoger datos reales.
+## Si algo falla
 
-## 6. Conecta el experimento
-
-En [`docs/js/config.js`](../docs/js/config.js):
-
-```javascript
-ENDPOINT: "https://script.google.com/macros/s/AKfy.../exec",
-TOKEN: "la-misma-cadena-que-pusiste-en-Codigo.gs",
-```
-
-Sube además el número de `?v=` en las etiquetas `<script>` de
-[`docs/index.html`](../docs/index.html), para que a nadie le sirva el navegador
-la configuración anterior desde la caché.
-
-En cuanto `ENDPOINT` deje de estar vacío, desaparece solo el aviso de versión de
-prueba que hoy muestra la portada.
-
-## 7. Cada vez que cambies el script
-
-Apps Script **no** actualiza el despliegue al guardar. Hay que ir a
-**Implementar > Gestionar implementaciones**, el lápiz, **Versión: Nueva
-versión**, **Implementar**. La URL no cambia.
+| Síntoma | Causa casi segura |
+|---|---|
+| La URL abierta en el navegador no devuelve `{"ok":true...}` | La implementación no es de tipo aplicación web, o el acceso no es "cualquier usuario" |
+| `prueba_` da error de permisos | Falta completar el paso 3 |
+| La fila no aparece en la hoja | El script se creó vinculado a otra hoja. Comprueba que abriste el editor desde esta |
+| Cambias el código y no surte efecto | Apps Script no actualiza el despliegue al guardar: **Implementar > Gestionar implementaciones > lápiz > Versión: Nueva versión > Implementar**. La URL no cambia |
 
 ## Notas de funcionamiento
 
