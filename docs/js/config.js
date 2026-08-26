@@ -12,7 +12,7 @@ window.CONFIG = {
 
   // URL del Web App de Google Apps Script (apps-script/INSTALACION.md).
   // Mientras esté vacía, el experimento funciona pero no envía nada.
-  ENDPOINT: "",
+  ENDPOINT: "https://script.google.com/macros/s/AKfycbyzrBifkVB_PfuYn40iVPWOp4Fj0J6QSOpigUTmZt5Eg1Koi-7iYS98sGVM0M2ruBKJ/exec",
 
   // Debe coincidir con TOKEN en Codigo.gs. Vacío = sin comprobación.
   TOKEN: "",
