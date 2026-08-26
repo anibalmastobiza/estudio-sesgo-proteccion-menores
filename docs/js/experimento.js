@@ -107,7 +107,8 @@
       var max = it.max || 100, paso_ = it.paso || 1;
       h += '<div class="escala">' +
            '<input type="range" min="0" max="' + max + '" step="' + paso_ +
-           '" value="' + Math.round(max / 2) + '" class="sin-tocar">' +
+           '" value="' + Math.round(max / 2) + '" class="sin-tocar" aria-label="' +
+           esc(it.enunciado) + '">' +
            '<div class="anclas"><span>' + esc(it.izq) + "</span><span>" + esc(it.der) + "</span></div>" +
            '<output class="valor"></output></div>';
 
@@ -181,6 +182,13 @@
 
   function mostrar(html, nombre) {
     app.innerHTML = html;
+    var primeraEscala = $('.item[data-tipo="escala"]', app);
+    if (primeraEscala) {
+      var instruccion = document.createElement("p");
+      instruccion.className = "instruccion-escalas";
+      instruccion.textContent = "Marca un punto en cada línea. Haz clic, tócala o usa las flechas.";
+      primeraEscala.parentNode.insertBefore(instruccion, primeraEscala);
+    }
     app.scrollIntoView({ block: "start" });
     window.scrollTo(0, 0);
     activarEscalas(app);
