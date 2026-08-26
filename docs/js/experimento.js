@@ -110,7 +110,7 @@
            '" value="' + Math.round(max / 2) + '" class="sin-tocar" aria-label="' +
            esc(it.enunciado) + '">' +
            '<div class="anclas"><span>' + esc(it.izq) + "</span><span>" + esc(it.der) + "</span></div>" +
-           '<output class="valor"></output></div>';
+           '<output class="valor">Sin marcar</output></div>';
 
     } else if (it.tipo === "opcion") {
       var ops = it.aleatorizar ? barajar(it.opciones) : it.opciones;
@@ -186,7 +186,7 @@
     if (primeraEscala) {
       var instruccion = document.createElement("p");
       instruccion.className = "instruccion-escalas";
-      instruccion.textContent = "Marca un punto en cada línea. Haz clic, tócala o usa las flechas.";
+      instruccion.textContent = "Pulsa o toca una posición en cada barra gris. Aparecerá un punto azul.";
       primeraEscala.parentNode.insertBefore(instruccion, primeraEscala);
     }
     app.scrollIntoView({ block: "start" });
