@@ -1,0 +1,138 @@
+/* Hoja de estilo del experimento. Sin dependencias externas. */
+
+:root {
+  --fondo: #ffffff;
+  --texto: #16191d;
+  --suave: #5b6470;
+  --linea: #dfe3e8;
+  --caja: #f5f7f9;
+  --acento: #1c4b82;
+  --acento-txt: #ffffff;
+  --alerta: #a12b2b;
+  --ancho: 40rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #14171a; --texto: #eceff2; --suave: #9aa4b0; --linea: #2c3238;
+    --caja: #1c2126; --acento: #6fa8e8; --acento-txt: #10141a; --alerta: #f28b82;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+
+main {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+h1 { font-size: 1.6rem; line-height: 1.25; margin: 0 0 .75rem; letter-spacing: -.01em; }
+h2 { font-size: 1.25rem; line-height: 1.3; margin: 0 0 .75rem; letter-spacing: -.01em; }
+p  { margin: 0 0 1rem; }
+a  { color: var(--acento); }
+
+.entradilla { color: var(--suave); font-size: 1.02rem; }
+
+.ficha {
+  background: var(--caja);
+  border: 1px solid var(--linea);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem .4rem;
+  margin: 0 0 1.75rem;
+  font-size: .95rem;
+}
+.ficha h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); }
+.ficha ul { margin: 0 0 1rem; padding-left: 1.1rem; }
+.ficha li { margin-bottom: .55rem; }
+
+/* estímulo */
+.estimulo { margin: 0 0 1.5rem; text-align: center; }
+.estimulo img {
+  width: 100%; max-width: 15rem; height: auto;
+  border-radius: 10px; border: 1px solid var(--linea);
+  background: var(--caja);
+}
+
+/* viñeta */
+.vinyeta {
+  border-left: 3px solid var(--acento);
+  padding: .25rem 0 .25rem 1rem;
+  margin: 0 0 2rem;
+  font-size: 1.06rem;
+}
+.vinyeta p:last-child { margin-bottom: 0; }
+
+/* ítems */
+.item {
+  border-top: 1px solid var(--linea);
+  padding: 1.4rem 0 .4rem;
+}
+.item.falta { border-top-color: var(--alerta); }
+.enunciado { font-weight: 600; margin-bottom: .35rem; }
+.ayuda { color: var(--suave); font-size: .9rem; margin-bottom: .6rem; }
+.aviso { color: var(--alerta); font-size: .88rem; margin: .4rem 0 0; }
+
+/* escalas */
+.escala { margin: .8rem 0 .4rem; position: relative; }
+.escala input[type=range] { width: 100%; accent-color: var(--acento); height: 1.6rem; }
+.escala input[type=range].sin-tocar::-webkit-slider-thumb { opacity: 0; }
+.escala input[type=range].sin-tocar::-moz-range-thumb { opacity: 0; }
+.anclas { display: flex; justify-content: space-between; gap: 1rem; color: var(--suave); font-size: .85rem; }
+.anclas span:last-child { text-align: right; }
+.valor {
+  display: block; text-align: center; margin-top: .35rem;
+  font-variant-numeric: tabular-nums; font-weight: 600; color: var(--acento);
+}
+
+/* opciones */
+.opciones { display: flex; flex-direction: column; gap: .5rem; margin-top: .6rem; }
+.opcion {
+  display: flex; align-items: flex-start; gap: .65rem;
+  border: 1px solid var(--linea); border-radius: 8px;
+  padding: .7rem .85rem; cursor: pointer;
+}
+.opcion:hover { border-color: var(--acento); }
+.opcion input { margin: .2rem 0 0; accent-color: var(--acento); flex: none; }
+.opcion:has(input:checked) { border-color: var(--acento); background: var(--caja); }
+
+/* campos */
+.numero { display: flex; align-items: center; gap: .5rem; margin-top: .6rem; }
+input[type=number], select, textarea {
+  font: inherit; color: inherit; background: var(--fondo);
+  border: 1px solid var(--linea); border-radius: 8px; padding: .55rem .7rem;
+}
+input[type=number] { width: 7rem; }
+select { width: 100%; max-width: 22rem; }
+textarea { width: 100%; resize: vertical; }
+.sufijo { color: var(--suave); }
+
+/* botón */
+button.principal {
+  margin-top: 2rem; width: 100%;
+  font: inherit; font-weight: 600;
+  background: var(--acento); color: var(--acento-txt);
+  border: 0; border-radius: 8px; padding: .85rem 1rem; cursor: pointer;
+}
+button.principal:disabled { opacity: .45; cursor: default; }
+button.principal:hover:not(:disabled) { filter: brightness(1.08); }
+
+.estado { color: var(--suave); font-size: .88rem; margin-top: .8rem; text-align: center; }
+.depuracion { color: var(--alerta); font-size: .8rem; font-family: ui-monospace, monospace; }
+
+footer {
+  max-width: var(--ancho); margin: 0 auto; padding: 1rem 1.25rem 3rem;
+  color: var(--suave); font-size: .82rem; border-top: 1px solid var(--linea);
+}
+.aviso-js { max-width: var(--ancho); margin: 3rem auto; padding: 0 1.25rem; }
+
+@media (max-width: 30rem) {
+  main { padding: 1.75rem 1rem 3rem; }
+  h1 { font-size: 1.4rem; }
+}

@@ -1,0 +1,42 @@
+# Datos con posibilidad de reidentificación: nunca al repositorio.
+analisis/datos/
+analisis/salida/
+
+# Salida regenerable. Las figuras del repositorio saldrían de datos simulados y
+# se confundirían con resultados reales.
+analisis/figuras/
+
+# Estímulos: se distribuyen aparte, con su licencia y su acuerdo de uso.
+docs/estimulos/*.png
+docs/estimulos/*.jpg
+docs/estimulos/*.jpeg
+estimulos/crudo/
+estimulos/final/
+estimulos/salida/
+!docs/estimulos/placeholder/
+
+# Credenciales
+*.env
+credenciales*.json
+secreto*
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Registros de ejecución
+preregistro/potencia_log.txt
+
+# Salida accidental del dispositivo grafico por defecto de R
+Rplots.pdf

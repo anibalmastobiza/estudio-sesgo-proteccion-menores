@@ -1,0 +1,47 @@
+Potencia y error de tipo I. Contraste racializado vs no racializado.
+Fecha: 2026-08-26 | Simulaciones por escenario: 500
+Semilla: 20260826 | R 4.3.2 | lme4 1.1.36
+y ~ rac + efecto aleatorio por conjunto; alfa nominal = .05 bilateral.
+tau_int = 0.15 | DT residual = 1 | d en unidades de DT.
+
+PARTE A. Error de tipo I empirico (d = 0, n_part = 900):
+              spec n_conjuntos tau_pend alfa_empirico singulares
+    correlacionada           6      0.1         0.028      0.652
+    correlacionada          12      0.1         0.038      0.594
+    correlacionada          24      0.1         0.054      0.598
+    correlacionada           6      0.2         0.046      0.492
+    correlacionada          12      0.2         0.062      0.454
+    correlacionada          24      0.2         0.032      0.548
+ no_correlacionada           6      0.1         0.040      0.454
+ no_correlacionada          12      0.1         0.046      0.434
+ no_correlacionada          24      0.1         0.042      0.442
+ no_correlacionada           6      0.2         0.052      0.296
+ no_correlacionada          12      0.2         0.054      0.224
+ no_correlacionada          24      0.2         0.050      0.194
+   solo_intercepto           6      0.1         0.086      0.036
+   solo_intercepto          12      0.1         0.050      0.018
+   solo_intercepto          24      0.1         0.066      0.034
+   solo_intercepto           6      0.2         0.172      0.012
+   solo_intercepto          12      0.2         0.108      0.006
+   solo_intercepto          24      0.2         0.074      0.006
+
+PARTE B. Potencia (d = 0.30, pendientes no correlacionadas):
+ n_part n_conjuntos tau_pend potencia     sesgo dt_estim singulares
+    600           6      0.1    0.760 -0.009624   0.0950      0.590
+    900           6      0.1    0.900 -0.000775   0.0834      0.496
+   1200           6      0.1    0.924  0.000475   0.0768      0.434
+    600          12      0.1    0.864 -0.001718   0.0920      0.528
+    900          12      0.1    0.960 -0.003632   0.0767      0.440
+   1200          12      0.1    0.986 -0.000726   0.0702      0.346
+    600          24      0.1    0.890 -0.008821   0.0887      0.572
+    900          24      0.1    0.982  0.004613   0.0728      0.458
+   1200          24      0.1    0.994 -0.005245   0.0636      0.380
+    600           6      0.2    0.604 -0.000336   0.1121      0.430
+    900           6      0.2    0.654 -0.001383   0.1123      0.228
+   1200           6      0.2    0.686  0.005711   0.1070      0.176
+    600          12      0.2    0.810  0.007731   0.1061      0.330
+    900          12      0.2    0.874 -0.001002   0.0908      0.216
+   1200          12      0.2    0.932  0.004525   0.0869      0.150
+    600          24      0.2    0.898  0.007865   0.0926      0.346
+    900          24      0.2    0.932 -0.000837   0.0867      0.240
+   1200          24      0.2    0.970 -0.005278   0.0739      0.148

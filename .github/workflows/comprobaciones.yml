@@ -1,0 +1,59 @@
+name: comprobaciones
+
+# Comprobación rápida de sintaxis. No instala paquetes de R ni ejecuta el
+# análisis: el pipeline completo se ejecuta en local con datos simulados
+# (analisis/00_simular_datos.R y siguientes).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  sintaxis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: JavaScript del experimento
+        run: |
+          for f in docs/js/*.js; do node --check "$f"; echo "ok $f"; done
+          cp apps-script/Codigo.gs /tmp/Codigo.js && node --check /tmp/Codigo.js
+          echo "ok apps-script/Codigo.gs"
+
+      - name: JSON del manifiesto
+        run: node -e "JSON.parse(require('fs').readFileSync('docs/estimulos/manifiesto.json','utf8')); console.log('ok manifiesto.json')"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Python de los estímulos
+        run: |
+          for f in estimulos/*.py; do python -c "import ast,sys; ast.parse(open(sys.argv[1],encoding='utf-8').read())" "$f"; echo "ok $f"; done
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+
+      - name: R del análisis
+        run: |
+          for f in analisis/*.R preregistro/*.R estimulos/*.R; do
+            Rscript -e 'invisible(parse(commandArgs(TRUE)[1]))' "$f"
+            echo "ok $f"
+          done
+
+      - name: Caracteres prohibidos
+        run: |
+          if grep -rlP '[\x{200B}-\x{200D}\x{2060}\x{FEFF}\x{00A0}\x{202F}\x{00AD}\x{200E}\x{200F}\x{202A}-\x{202E}\x{2066}-\x{2069}\x{180E}\x{3164}\x{2800}\x{2014}]' \
+               --include='*.md' --include='*.js' --include='*.R' --include='*.py' \
+               --include='*.html' --include='*.css' --include='*.gs' --include='*.yml' .; then
+            echo "Se han encontrado caracteres invisibles o guion largo en los archivos listados."
+            exit 1
+          fi
+          echo "ok sin caracteres prohibidos"

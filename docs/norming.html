@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valoración de imágenes</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+<footer><p>Estudio normativo previo. Participación anónima y voluntaria.</p></footer>
+
+<script src="js/config.js?v=1"></script>
+<script>
+/* Estudio normativo de los estímulos.
+   Cada juez valora un subconjunto aleatorio de imágenes. Los promedios
+   resultantes alimentan estimulos/seleccion_emparejada.R, que decide qué
+   conjuntos entran en el estudio principal. */
+(function () {
+  "use strict";
+  var C = window.CONFIG, app = document.getElementById("app");
+  var MAX_POR_JUEZ = 12;             // tope de imágenes por juez
+  var POR_JUEZ = MAX_POR_JUEZ;       // se recorta al número de conjuntos al cargar
+                                     // (nadie ve dos versiones de la misma identidad)
+
+  var PREGUNTAS = [
+    { id: "origen", tipo: "opcion", enunciado: "¿De dónde dirías que es?",
+      opciones: [["espana","De España"],["europa","De otro país de Europa"],
+                 ["magreb","De Marruecos o del norte de África"],
+                 ["africa_sub","Del África subsahariana"],["latam","De América Latina"],
+                 ["otro","De otro sitio"],["nose","No sabría decirlo"]] },
+    { id: "prototipicidad", tipo: "escala", enunciado: "¿Cómo de típico es su aspecto de ese origen?",
+      izq: "Nada típico", der: "Muy típico" },
+    { id: "edad", tipo: "numero", enunciado: "¿Qué edad dirías que tiene?", min: 6, max: 30, sufijo: "años" },
+    { id: "atractivo", tipo: "escala", enunciado: "¿Cómo de atractivo te parece?", izq: "Nada", der: "Mucho" },
+    { id: "confiabilidad", tipo: "escala", enunciado: "¿Cómo de fiable te parece?", izq: "Nada", der: "Mucho" },
+    { id: "expresion", tipo: "opcion", enunciado: "¿Qué cara tiene?",
+      opciones: [["neutra","Neutra"],["contento","Contento"],["serio","Serio"],
+                 ["enfadado","Enfadado"],["triste","Triste"],["otra","Otra"]] },
+    { id: "realismo", tipo: "escala", enunciado: "¿Cómo de real te parece la foto?",
+      izq: "Generada por ordenador", der: "Fotografía real" }
+  ];
+
+  var D = { id: (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)),
+            inicio_iso: new Date().toISOString() };
+  var cola = [], i = 0, valoraciones = [];
+
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function barajar(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+  function htmlItem(it) {
+    var h = '<div class="item" data-id="'+it.id+'" data-tipo="'+it.tipo+'" data-opcional="0">';
+    h += '<p class="enunciado">'+esc(it.enunciado)+'</p>';
+    if (it.tipo === "escala") {
+      h += '<div class="escala"><input type="range" min="0" max="100" step="1" value="50" class="sin-tocar">'+
+           '<div class="anclas"><span>'+esc(it.izq)+'</span><span>'+esc(it.der)+'</span></div>'+
+           '<output class="valor">-</output></div>';
+    } else if (it.tipo === "opcion") {
+      h += '<div class="opciones">';
+      it.opciones.forEach(function(o){ h += '<label class="opcion"><input type="radio" name="'+it.id+'" value="'+esc(o[0])+'"><span>'+esc(o[1])+'</span></label>'; });
+      h += '</div>';
+    } else {
+      h += '<div class="numero"><input type="number" min="'+it.min+'" max="'+it.max+'"><span class="sufijo">'+esc(it.sufijo)+'</span></div>';
+    }
+    return h + '<p class="aviso" hidden>Contesta para poder seguir.</p></div>';
+  }
+
+  function activar() {
+    [].forEach.call(document.querySelectorAll(".escala input[type=range]"), function (r) {
+      var o = r.parentNode.querySelector(".valor");
+      r.addEventListener("input", function () { r.classList.remove("sin-tocar"); o.textContent = r.value; });
+    });
+  }
+
+  function recoger() {
+    var v = {}, faltan = 0;
+    [].forEach.call(document.querySelectorAll(".item"), function (nodo) {
+      var id = nodo.dataset.id, tipo = nodo.dataset.tipo, x = null;
+      if (tipo === "escala") { var r = nodo.querySelector("input[type=range]"); x = r.classList.contains("sin-tocar") ? null : Number(r.value); }
+      else if (tipo === "opcion") { var m = nodo.querySelector("input:checked"); x = m ? m.value : null; }
+      else { var n = nodo.querySelector("input[type=number]"); x = n.value === "" ? null : Number(n.value);
+             if (x !== null && (x < Number(n.min) || x > Number(n.max))) x = null; }
+      nodo.querySelector(".aviso").hidden = (x !== null);
+      nodo.classList.toggle("falta", x === null);
+      if (x === null) faltan++; else v[id] = x;
+    });
+    return faltan ? null : v;
+  }
+
+  function portada() {
+    app.innerHTML = '<h1>Valoración de imágenes</h1>'+
+      '<p class="entradilla">Vas a ver '+POR_JUEZ+' fotos de chicos. De cada una nos interesa tu primera impresión. Dura unos '+Math.max(3, Math.round(POR_JUEZ*0.6))+' minutos.</p>'+
+      '<div class="ficha"><ul>'+
+        '<li>Participación anónima y voluntaria. Puedes cerrar la pestaña cuando quieras.</li>'+
+        '<li>No hay respuestas correctas. Responde deprisa, con lo primero que te venga.</li>'+
+        '<li>Solo pueden participar personas mayores de 18 años.</li>'+
+      '</ul></div>'+
+      '<button id="ir" class="principal">Empezar</button>';
+    document.getElementById("ir").addEventListener("click", siguiente);
+  }
+
+  function siguiente() {
+    if (i >= cola.length) return demografia();
+    var img = cola[i];
+    app.innerHTML = '<p class="entradilla">Imagen '+(i+1)+' de '+cola.length+'</p>'+
+      '<figure class="estimulo"><img src="'+esc(C.RUTA_ESTIMULOS+img.ruta)+'" alt="Fotografía de un chico"></figure>'+
+      PREGUNTAS.map(htmlItem).join("")+
+      '<button id="ir" class="principal">Siguiente</button>';
+    window.scrollTo(0,0); activar();
+    var t0 = performance.now();
+    document.getElementById("ir").addEventListener("click", function () {
+      var v = recoger();
+      if (!v) { document.querySelector(".falta").scrollIntoView({behavior:"smooth",block:"center"}); return; }
+      v.juez = D.id; v.conjunto = img.conjunto; v.condicion = img.condicion; v.ruta = img.ruta;
+      v.orden = i + 1; v.ms = Math.round(performance.now() - t0);
+      valoraciones.push(v); i++; siguiente();
+    });
+  }
+
+  function demografia() {
+    app.innerHTML = '<h2>Últimas preguntas</h2>'+
+      htmlItem({id:"edad_juez",tipo:"numero",enunciado:"¿Cuántos años tienes?",min:18,max:99,sufijo:"años"})+
+      htmlItem({id:"genero_juez",tipo:"opcion",enunciado:"¿Cuál es tu género?",
+        opciones:[["mujer","Mujer"],["hombre","Hombre"],["nb","No binario"],["nc","Prefiero no contestar"]]})+
+      htmlItem({id:"racializado_juez",tipo:"opcion",enunciado:"¿Te consideras una persona racializada?",
+        opciones:[["no","No"],["si","Sí"],["nc","Prefiero no contestar"]]})+
+      '<button id="ir" class="principal">Terminar</button>';
+    activar();
+    document.getElementById("ir").addEventListener("click", function () {
+      var v = recoger();
+      if (!v) return;
+      Object.keys(v).forEach(function (k) { D[k] = v[k]; });
+      D.fin_iso = new Date().toISOString();
+      enviar();
+      app.innerHTML = '<h1>Gracias</h1><p class="entradilla">Ya puedes cerrar la pestaña.</p>';
+    });
+  }
+
+  function enviar() {
+    var carga = JSON.stringify({ token: C.TOKEN, tipo: "norming", juez: D, valoraciones: valoraciones });
+    try { localStorage.setItem("norming_" + D.id, carga); } catch (e) {}
+    if (!C.ENDPOINT) { console.log("[sin ENDPOINT]", carga); return; }
+    fetch(C.ENDPOINT, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: carga, keepalive: true })
+      .catch(function(){ if (navigator.sendBeacon) navigator.sendBeacon(C.ENDPOINT, new Blob([carga],{type:"text/plain"})); });
+  }
+
+  fetch(C.MANIFIESTO).then(function(r){return r.json();}).then(function (m) {
+    var todas = [];
+    m.conjuntos.forEach(function (c) {
+      Object.keys(c.imagenes).forEach(function (cond) {
+        todas.push({ conjunto: c.id, condicion: cond, ruta: c.imagenes[cond] });
+      });
+    });
+    // Un juez no ve dos versiones de la misma identidad: evita comparaciones explícitas
+    // y elimina la dependencia entre valoraciones del mismo conjunto.
+    POR_JUEZ = Math.min(MAX_POR_JUEZ, m.conjuntos.length);
+    var vistos = {}, sel = [];
+    barajar(todas).forEach(function (x) {
+      if (sel.length < POR_JUEZ && !vistos[x.conjunto]) { vistos[x.conjunto] = 1; sel.push(x); }
+    });
+    cola = sel;
+    D.version_estimulos = m.version;
+    portada();
+  }).catch(function () {
+    app.innerHTML = "<h1>Error</h1><p>No se ha podido cargar el manifiesto de estímulos.</p>";
+  });
+})();
+</script>
+</body>
+</html>

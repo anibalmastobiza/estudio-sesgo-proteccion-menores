@@ -1,0 +1,78 @@
+{
+  "version": "0.0-marcadores",
+  "aviso": "ESTOS ARCHIVOS NO SON ESTIMULOS. Son marcadores de posicion para poder probar la aplicacion. Sustituyelos por las imagenes reales, normativizadas y aprobadas por el comite de etica, manteniendo las mismas rutas o actualizando este manifiesto. Ver estimulos/README.md.",
+  "condiciones": [
+    "no_racializado",
+    "magrebi",
+    "subsahariano"
+  ],
+  "n_conjuntos": 6,
+  "estructura": "Cada conjunto es una misma identidad facial generada en tres versiones fenotipicas mediante mezcla de estilos (style mixing). El conjunto es un factor aleatorio cruzado en el analisis.",
+  "campos_normativos_esperados": [
+    "origen_modal",
+    "prop_origen_modal",
+    "edad_percibida_M",
+    "edad_percibida_DT",
+    "atractivo_M",
+    "confiabilidad_M",
+    "expresion_neutra_prop",
+    "realismo_M",
+    "n_jueces"
+  ],
+  "conjuntos": [
+    {
+      "id": "C01",
+      "imagenes": {
+        "no_racializado": "placeholder/C01_no_racializado.svg",
+        "magrebi": "placeholder/C01_magrebi.svg",
+        "subsahariano": "placeholder/C01_subsahariano.svg"
+      },
+      "normativo": null
+    },
+    {
+      "id": "C02",
+      "imagenes": {
+        "no_racializado": "placeholder/C02_no_racializado.svg",
+        "magrebi": "placeholder/C02_magrebi.svg",
+        "subsahariano": "placeholder/C02_subsahariano.svg"
+      },
+      "normativo": null
+    },
+    {
+      "id": "C03",
+      "imagenes": {
+        "no_racializado": "placeholder/C03_no_racializado.svg",
+        "magrebi": "placeholder/C03_magrebi.svg",
+        "subsahariano": "placeholder/C03_subsahariano.svg"
+      },
+      "normativo": null
+    },
+    {
+      "id": "C04",
+      "imagenes": {
+        "no_racializado": "placeholder/C04_no_racializado.svg",
+        "magrebi": "placeholder/C04_magrebi.svg",
+        "subsahariano": "placeholder/C04_subsahariano.svg"
+      },
+      "normativo": null
+    },
+    {
+      "id": "C05",
+      "imagenes": {
+        "no_racializado": "placeholder/C05_no_racializado.svg",
+        "magrebi": "placeholder/C05_magrebi.svg",
+        "subsahariano": "placeholder/C05_subsahariano.svg"
+      },
+      "normativo": null
+    },
+    {
+      "id": "C06",
+      "imagenes": {
+        "no_racializado": "placeholder/C06_no_racializado.svg",
+        "magrebi": "placeholder/C06_magrebi.svg",
+        "subsahariano": "placeholder/C06_subsahariano.svg"
+      },
+      "normativo": null
+    }
+  ]
+}
