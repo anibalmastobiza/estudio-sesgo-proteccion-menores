@@ -4,8 +4,8 @@
 
 **Título del estudio.** Percepción social de casos de desprotección de menores.
 
-**Equipo investigador.** [nombre], [departamento], [universidad].
-**Contacto.** [correo].
+**Equipo investigador.** Aníbal Astobiza, Universidad de Granada.
+**Contacto.** amastobiza@ugr.es
 **Referencia del comité de ética.** [referencia].
 **Financiación.** [fuente o "sin financiación externa"].
 
@@ -37,9 +37,9 @@ al equipo investigador, alojada en la Unión Europea. Se conservan durante
 en abierto junto con el artículo, sin ningún dato que permita identificarle.
 
 Base jurídica: consentimiento (artículo 6.1.a del Reglamento (UE) 2016/679).
-Responsable del tratamiento: [universidad]. Delegado de protección de datos:
+Responsable del tratamiento: Universidad de Granada. Delegado de protección de datos:
 [contacto]. Puede ejercer sus derechos de acceso, rectificación, supresión,
-limitación, portabilidad y oposición escribiendo a [correo]. Dado que los datos
+limitación, portabilidad y oposición escribiendo a amastobiza@ugr.es. Dado que los datos
 son anónimos desde el momento de la recogida, el ejercicio de esos derechos
 solo es posible durante la sesión, mediante la opción de retirada que aparece al
 final.

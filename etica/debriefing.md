@@ -55,4 +55,4 @@ Su compensación es la misma diga lo que diga.
 ## Contacto
 
 Si tiene preguntas, o quiere recibir los resultados cuando se publiquen, escriba
-a [correo]. Si el tema le ha afectado, puede contactar con [recurso de apoyo].
+a amastobiza@ugr.es (Aníbal Astobiza, Universidad de Granada). Si el tema le ha afectado, puede contactar con [recurso de apoyo].

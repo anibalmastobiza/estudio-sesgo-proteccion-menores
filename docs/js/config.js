@@ -1,6 +1,15 @@
 /* Configuración del estudio. Editar antes de publicar. */
 window.CONFIG = {
 
+  // Quién firma el estudio. Aparece en la portada y en el debriefing.
+  INVESTIGADOR: "Aníbal Astobiza",
+  INSTITUCION:  "Universidad de Granada",
+  CONTACTO:     "amastobiza@ugr.es",
+
+  // Referencia del comité de ética. Mientras esté vacía, la portada NO afirma
+  // que el estudio esté aprobado: decirlo sin serlo sería falso.
+  REF_ETICA: "",
+
   // URL del Web App de Google Apps Script (apps-script/INSTALACION.md).
   // Mientras esté vacía, el experimento funciona pero no envía nada.
   ENDPOINT: "",

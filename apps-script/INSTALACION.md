@@ -6,10 +6,13 @@ Web App exige aceptar permisos en tu propia cuenta, de forma interactiva.
 
 ## 1. La hoja ya existe
 
-Está creada en tu Drive, con las 71 columnas del protocolo en la primera fila:
+Está creada en tu Drive, con las 56 columnas del protocolo en la primera fila:
 
 **Estudio menores - respuestas**
-https://docs.google.com/spreadsheets/d/12VMUIHyxaWxFSjC7PpG9IhvWL3CJda6IVC0l-4p_h-E/edit
+https://docs.google.com/spreadsheets/d/19anStdR8m8QaATmn63aL7DowKZEDsTK48kZ-_1FaPyc/edit
+
+En tu Drive hay otra hoja marcada como `OBSOLETA`: era la del cuestionario largo
+de 33 ítems, anterior al recorte. No la uses. Puedes borrarla cuando quieras.
 
 Sirve igual cualquier hoja vacía: el receptor crea la pestaña `respuestas` y las
 cabeceras la primera vez que recibe algo, y si el libro tiene una sola pestaña la

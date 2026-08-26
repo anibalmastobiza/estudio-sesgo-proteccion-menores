@@ -22,7 +22,7 @@ receptor no la registra.
 
 ## Dónde residen
 
-Google Workspace, región de la Unión Europea. Verificar en la consola de
+Google Workspace, región de la Unión Europea. Responsable: Universidad de Granada. Verificar en la consola de
 administración que la ubicación de datos del dominio está fijada en la UE antes
 de abrir el campo. Si el dominio no lo permite, sustituir el receptor por una
 alternativa autoalojada.

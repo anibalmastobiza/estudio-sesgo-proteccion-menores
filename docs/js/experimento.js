@@ -224,8 +224,8 @@
     mostrar(
       borrador +
       '<h1>¿Cambia la decisión si cambia la cara?</h1>' +
-      '<p class="entradilla">Un estudio de la Universidad sobre cómo decidimos qué hacer ' +
-      'cuando un menor pide ayuda. Dura unos <strong>3 minutos</strong>.</p>' +
+      '<p class="entradilla">Un estudio de la ' + esc(C.INSTITUCION) + ' sobre cómo ' +
+      'decidimos qué hacer cuando un menor pide ayuda. Dura unos <strong>3 minutos</strong>.</p>' +
       '<div class="ficha">' +
         '<h2>Antes de empezar</h2>' +
         '<ul>' +
@@ -235,7 +235,13 @@
           '<li><strong>Datos.</strong> Se guardan en una hoja de cálculo con acceso restringido al equipo investigador y se publicarán en abierto de forma agregada y anónima.</li>' +
           '<li><strong>Aviso.</strong> Este estudio no te dice desde el principio qué compara exactamente. Al final te lo explicamos entero y podrás retirar tus respuestas.</li>' +
           '<li><strong>Edad.</strong> Solo pueden participar personas mayores de 18 años.</li>' +
-          '<li><strong>Contacto.</strong> <span id="contacto">[correo del equipo investigador]</span>. Aprobado por el comité de ética <span id="ref-etica">[referencia]</span>.</li>' +
+          '<li><strong>Quién lo hace.</strong> ' + esc(C.INVESTIGADOR) + ', ' +
+            esc(C.INSTITUCION) + '. Puedes escribir a <a href="mailto:' +
+            esc(C.CONTACTO) + '">' + esc(C.CONTACTO) + '</a> para cualquier duda.</li>' +
+          (C.REF_ETICA
+            ? '<li><strong>Ética.</strong> Estudio aprobado por el comité de ética con la ' +
+              'referencia ' + esc(C.REF_ETICA) + '.</li>'
+            : '') +
         "</ul>" +
       "</div>" +
       '<div class="item" data-id="consentimiento" data-tipo="opcion" data-opcional="0">' +
@@ -374,7 +380,8 @@
       enviar(false);
       mostrar("<h1>Listo</h1><p class=\"entradilla\">Gracias por participar. Ya puedes cerrar la pestaña.</p>" +
               "<p>Si quieres los resultados cuando estén publicados, escribe a " +
-              '<span id="contacto">[correo del equipo investigador]</span>.</p>', "final");
+              '<a href="mailto:' + esc(C.CONTACTO) + '">' + esc(C.CONTACTO) + "</a>.</p>" +
+              "<p>" + esc(C.INVESTIGADOR) + ", " + esc(C.INSTITUCION) + ".</p>", "final");
     });
   }
 
