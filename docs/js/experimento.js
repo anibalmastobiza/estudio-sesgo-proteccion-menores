@@ -109,7 +109,7 @@
            '<input type="range" min="0" max="' + max + '" step="' + paso_ +
            '" value="' + Math.round(max / 2) + '" class="sin-tocar">' +
            '<div class="anclas"><span>' + esc(it.izq) + "</span><span>" + esc(it.der) + "</span></div>" +
-           '<output class="valor">-</output></div>';
+           '<output class="valor"></output></div>';
 
     } else if (it.tipo === "opcion") {
       var ops = it.aleatorizar ? barajar(it.opciones) : it.opciones;

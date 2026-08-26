@@ -91,16 +91,48 @@ a  { color: var(--acento); }
 
 /* escalas */
 .escala { margin: .8rem 0 .4rem; position: relative; }
-.escala input[type=range] { width: 100%; accent-color: var(--acento); height: 1.6rem; }
-/* Mientras no se toca, ni el pulgar ni el relleno de la barra deben sugerir
-   una posición: un relleno hasta la mitad ancla las respuestas en el centro. */
-.escala input[type=range].sin-tocar { accent-color: var(--linea); }
+
+/* La barra se dibuja entera a mano. Con `accent-color` el navegador rellena el
+   tramo hasta el valor actual, y eso delata una posición inicial aunque el
+   pulgar esté oculto: el participante ve la barra medio llena y ancla ahí su
+   respuesta. Aquí la barra es uniforme hasta que se toca. */
+.escala input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.6rem;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+.escala input[type=range]::-webkit-slider-runnable-track {
+  height: 6px; border-radius: 3px; background: var(--linea);
+}
+.escala input[type=range]::-moz-range-track {
+  height: 6px; border-radius: 3px; background: var(--linea);
+}
+.escala input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 1.15rem; height: 1.15rem; margin-top: -.42rem;
+  border-radius: 50%; background: var(--acento);
+  border: 2px solid var(--fondo);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+}
+.escala input[type=range]::-moz-range-thumb {
+  width: 1.15rem; height: 1.15rem; border-radius: 50%;
+  background: var(--acento); border: 2px solid var(--fondo);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+}
 .escala input[type=range].sin-tocar::-webkit-slider-thumb { opacity: 0; }
 .escala input[type=range].sin-tocar::-moz-range-thumb { opacity: 0; }
+.escala input[type=range]:focus-visible::-webkit-slider-runnable-track {
+  outline: 2px solid var(--acento); outline-offset: 2px;
+}
+
 .anclas { display: flex; justify-content: space-between; gap: 1rem; color: var(--suave); font-size: .85rem; }
 .anclas span:last-child { text-align: right; }
 .valor {
-  display: block; text-align: center; margin-top: .35rem;
+  display: block; text-align: center; margin-top: .35rem; min-height: 1.2em;
   font-variant-numeric: tabular-nums; font-weight: 600; color: var(--acento);
 }
 

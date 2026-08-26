@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Valoración de imágenes</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="css/estilo.css">
+<link rel="stylesheet" href="css/estilo.css?v=7">
 </head>
 <body>
 <main id="app" aria-live="polite"></main>
@@ -55,7 +55,7 @@
     if (it.tipo === "escala") {
       h += '<div class="escala"><input type="range" min="0" max="100" step="1" value="50" class="sin-tocar">'+
            '<div class="anclas"><span>'+esc(it.izq)+'</span><span>'+esc(it.der)+'</span></div>'+
-           '<output class="valor">-</output></div>';
+           '<output class="valor"></output></div>';
     } else if (it.tipo === "opcion") {
       h += '<div class="opciones">';
       it.opciones.forEach(function(o){ h += '<label class="opcion"><input type="radio" name="'+it.id+'" value="'+esc(o[0])+'"><span>'+esc(o[1])+'</span></label>'; });
