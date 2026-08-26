@@ -207,7 +207,17 @@
 
   /* 1. portada, información y consentimiento */
   function pPortada() {
+    // Sin ENDPOINT no hay recogida posible. La página puede estar publicada
+    // antes de tener aprobación ética y hoja de cálculo, y en ese estado no
+    // debe presentarse como un estudio en marcha.
+    var borrador = C.ENDPOINT ? "" :
+      '<div class="borrador"><strong>Versión de prueba.</strong> Esta página ' +
+      'todavía no está conectada a ninguna base de datos y no registra nada de ' +
+      'lo que respondas. Puedes recorrerla para ver cómo es, y tus respuestas se ' +
+      'perderán al cerrar la pestaña.</div>';
+
     mostrar(
+      borrador +
       '<h1>¿Cambia la decisión si cambia la cara?</h1>' +
       '<p class="entradilla">Un estudio de la Universidad sobre cómo decidimos qué hacer ' +
       'cuando un menor pide ayuda. Dura unos <strong>5 minutos</strong>.</p>' +

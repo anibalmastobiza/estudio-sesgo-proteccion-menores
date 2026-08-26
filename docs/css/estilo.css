@@ -52,6 +52,16 @@ a  { color: var(--acento); }
 .ficha ul { margin: 0 0 1rem; padding-left: 1.1rem; }
 .ficha li { margin-bottom: .55rem; }
 
+.borrador {
+  border: 1px solid var(--alerta);
+  border-left-width: 4px;
+  border-radius: 8px;
+  padding: .85rem 1rem;
+  margin: 0 0 1.75rem;
+  font-size: .93rem;
+  color: var(--texto);
+}
+
 /* estímulo */
 .estimulo { margin: 0 0 1.5rem; text-align: center; }
 .estimulo img {

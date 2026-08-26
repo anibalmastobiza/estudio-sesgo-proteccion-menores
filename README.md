@@ -17,6 +17,12 @@ participante ve una sola cara), que es lo que permite estimar el efecto sin que 
 demanda experimental lo contamine. La comparación secuencial del hilo se conserva
 después, como bloque secundario.
 
+**Aplicación desplegada:** https://anibalmastobiza.github.io/estudio-sesgo-proteccion-menores/
+
+Mientras `ENDPOINT` esté vacío en `docs/js/config.js`, la página avisa de que es
+una versión de prueba y no registra nada. Ese aviso desaparece solo en cuanto se
+conecta la hoja de cálculo.
+
 ## Qué hay en este repositorio
 
 | Carpeta | Contenido |
