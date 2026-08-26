@@ -134,7 +134,7 @@ window.ITEMS = {
     {
       id: "contacto",
       tipo: "opcion",
-      enunciado: "¿Con qué frecuencia tratas con personas de origen migrante?",
+      enunciado: "¿Con qué frecuencia tratas con personas migrantes?",
       opciones: [
         ["1", "Nunca"], ["2", "Casi nunca"], ["3", "A veces"],
         ["4", "A menudo"], ["5", "A diario"]
