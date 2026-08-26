@@ -82,23 +82,24 @@ if ("sospecha" %in% names(d)) {
 d <- d |>
   mutate(
     condicion = factor(condicion, levels = CONDICIONES),
-    conjunto  = factor(conjunto),
+    # `conjunto` guarda el nombre del archivo del estímulo. Con estímulos
+    # anidados cada valor pertenece a una sola condición: es una cara, no un
+    # conjunto de versiones de la misma identidad.
+    cara      = factor(conjunto),
+    expresion = factor(expresion, levels = EXPRESIONES),
     rac       = as.integer(condicion != "no_racializado"),
+    afl       = as.integer(expresion == "afligido"),
 
-    # Respuesta principal. La devolución se invierte para que el índice apunte
-    # siempre en la dirección de más protección.
-    indice_proteccion = rowMeans(cbind(proteccion, garantias, 100 - devolucion)),
+    # Respuesta principal, dos ítems. La devolución se invierte para que el
+    # índice apunte siempre en la dirección de más protección.
+    indice_proteccion = rowMeans(cbind(proteccion, 100 - devolucion)),
 
     decision_devolucion = as.integer(decision == "devolucion"),
     decision_proteccion = as.integer(decision == "proteccion"),
-    extranjeria = as.integer(nacionalidad_atribuida == "no"),
+    extranjero_atribuido = as.integer(!origen_atribuido %in% c("espana", "nose")),
 
-    sdo       = rowMeans(cbind(sdo_1, sdo_2, 100 - sdo_3, 100 - sdo_4)),
-    prejuicio = rowMeans(cbind(prejuicio_1, 100 - prejuicio_2, amenaza)),
-    contacto  = as.numeric(contacto),
-
-    cambio_proteccion = proteccion_2 - proteccion,
-    orden_racial = as.integer(condicion_2 != "no_racializado") - rac
+    prejuicio = amenaza,
+    contacto  = as.numeric(contacto)
   )
 
 alfa_cronbach <- function(m) {
@@ -107,43 +108,45 @@ alfa_cronbach <- function(m) {
   k / (k - 1) * (1 - sum(apply(m, 2, var)) / var(rowSums(m)))
 }
 
-cabecera("Consistencia interna")
-a_prot <- alfa_cronbach(cbind(d$proteccion, d$garantias, 100 - d$devolucion))
-a_sdo  <- alfa_cronbach(cbind(d$sdo_1, d$sdo_2, 100 - d$sdo_3, 100 - d$sdo_4))
-a_prej <- alfa_cronbach(cbind(d$prejuicio_1, 100 - d$prejuicio_2, d$amenaza))
-cat(sprintf("índice de protección (3 ítems): alfa = %.3f\n", a_prot))
-cat(sprintf("dominancia social (4 ítems)   : alfa = %.3f\n", a_sdo))
-cat(sprintf("prejuicio y amenaza (3 ítems) : alfa = %.3f\n", a_prej))
-if (a_prot < .60)
-  cat("\nAVISO: alfa < .60. El preregistro obliga a pasar a `proteccion` como\n",
-      "respuesta principal y a declarar la desviación.\n", sep = "")
+cabecera("Consistencia del índice de protección")
+r_prot <- cor(d$proteccion, 100 - d$devolucion, use = "complete.obs")
+cat(sprintf("correlación entre los dos ítems: r = %.3f\n", r_prot))
+cat(sprintf("Spearman-Brown: %.3f\n", 2 * r_prot / (1 + r_prot)))
+if (r_prot < .30)
+  cat("\nAVISO: los dos ítems apenas covarían. El preregistro obliga a pasar a\n",
+      "`proteccion` como respuesta principal y a declarar la desviación.\n", sep = "")
 
 # --- Comprobación de la manipulación ------------------------------------------
 
-cabecera("Comprobación de la manipulación")
-if (all(!is.na(d$origen_atribuido))) {
-  cat("Origen atribuido por condición (porcentaje por fila):\n")
-  print(round(100 * prop.table(table(d$condicion, d$origen_atribuido), 1), 1))
-  cat("\nAtribución de nacionalidad no española, por condición:\n")
-  print(round(100 * tapply(d$extranjeria, d$condicion, mean, na.rm = TRUE), 1))
+cabecera("Comprobaciones de la manipulación")
+cat("Origen atribuido por fenotipo (porcentaje por fila):\n")
+print(round(100 * prop.table(table(d$condicion, d$origen_atribuido), 1), 1))
+cat("\nEmoción percibida por expresión (porcentaje por fila).\n")
+cat("Es la comprobación de que la manipulación de expresión llega:\n")
+print(round(100 * prop.table(table(d$expresion, d$emocion_percibida), 1), 1))
+cat("\nY que la emoción percibida NO depende del fenotipo dentro de cada expresión:\n")
+for (ex in levels(d$expresion)) {
+  sub <- droplevels(d[d$expresion == ex, ])
+  tb <- table(sub$condicion, sub$emocion_percibida)
+  pr2 <- suppressWarnings(chisq.test(tb))
+  cat(sprintf("  %-9s X2(%d) = %.2f, p = %.3f%s\n", ex, pr2$parameter, pr2$statistic,
+              pr2$p.value, if (pr2$p.value < .05) "   <-- REVISAR" else ""))
 }
 
 # --- Descriptivos y guardado --------------------------------------------------
 
-cabecera("Descriptivos por condición")
+cabecera("Descriptivos por casilla del diseño")
 resumen <- d |>
-  group_by(condicion) |>
+  group_by(condicion, expresion) |>
   summarise(n = n(),
             # `summarise` evalúa en orden y reutiliza lo ya creado: la DT debe
             # calcularse antes de sobrescribir la columna con su media.
             dt_indice = sd(indice_proteccion),
             media_indice = mean(indice_proteccion),
-            dt_edad = sd(edad_percibida),
-            media_edad = mean(edad_percibida),
             media_credibilidad = mean(credibilidad),
             media_peligro = mean(peligro),
             devolucion_pct = 100 * mean(decision_devolucion), .groups = "drop") |>
-  select(condicion, n, media_indice, dt_indice, media_edad, dt_edad,
+  select(condicion, expresion, n, media_indice, dt_indice,
          media_credibilidad, media_peligro, devolucion_pct)
 print(as.data.frame(resumen), row.names = FALSE, digits = 4)
 escribe_csv(resumen, "analisis/salida/descriptivos.csv")
@@ -151,4 +154,17 @@ escribe_csv(resumen, "analisis/salida/descriptivos.csv")
 dir.create("analisis/datos", showWarnings = FALSE, recursive = TRUE)
 saveRDS(d, "analisis/datos/preparados.rds")
 cat("\nGuardado analisis/datos/preparados.rds con", nrow(d), "casos y",
-    nlevels(d$conjunto), "conjuntos.\n")
+    nlevels(d$cara), "caras.\n")
+cat("Caras por condición:\n")
+print(tapply(d$cara, d$condicion, function(x) nlevels(droplevels(x))))
+
+# Las cuatro casillas del diseño tienen que estar equilibradas. Si no lo están,
+# el contraste de fenotipo lleva dentro un contraste de expresión.
+cabecera("Equilibrio del diseño 2 x 2")
+tab <- table(d$condicion, d$expresion)
+print(tab)
+pr <- suppressWarnings(chisq.test(tab))
+cat(sprintf("Independencia entre fenotipo y expresión: X2(%d) = %.2f, p = %.3f\n",
+            pr$parameter, pr$statistic, pr$p.value))
+if (pr$p.value < .05)
+  cat("AVISO: fenotipo y expresión no están cruzados al azar. Revise la asignación.\n")

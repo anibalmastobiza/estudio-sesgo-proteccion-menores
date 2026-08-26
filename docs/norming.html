@@ -11,7 +11,7 @@
 <main id="app" aria-live="polite"></main>
 <footer><p>Estudio normativo previo. Participación anónima y voluntaria.</p></footer>
 
-<script src="js/config.js?v=1"></script>
+<script src="js/config.js?v=3"></script>
 <script>
 /* Estudio normativo de los estímulos.
    Cada juez valora un subconjunto aleatorio de imágenes. Los promedios
@@ -112,7 +112,8 @@
     document.getElementById("ir").addEventListener("click", function () {
       var v = recoger();
       if (!v) { document.querySelector(".falta").scrollIntoView({behavior:"smooth",block:"center"}); return; }
-      v.juez = D.id; v.conjunto = img.conjunto; v.condicion = img.condicion; v.ruta = img.ruta;
+      v.juez = D.id; v.conjunto = img.conjunto; v.condicion = img.condicion;
+      v.estrato = img.estrato || ""; v.ruta = img.ruta;
       v.orden = i + 1; v.ms = Math.round(performance.now() - t0);
       valoraciones.push(v); i++; siguiente();
     });
@@ -147,14 +148,28 @@
 
   fetch(C.MANIFIESTO).then(function(r){return r.json();}).then(function (m) {
     var todas = [];
-    m.conjuntos.forEach(function (c) {
-      Object.keys(c.imagenes).forEach(function (cond) {
-        todas.push({ conjunto: c.id, condicion: cond, ruta: c.imagenes[cond] });
+    if (m.estructura === "anidada") {
+      m.condiciones.forEach(function (cond) {
+        var porCodigo = m.caras[cond] || {};
+        var mapa = m.estrato_de_expresion || {};
+        Object.keys(porCodigo).forEach(function (codigo) {
+          porCodigo[codigo].forEach(function (ruta) {
+            todas.push({ conjunto: ruta.split("/").pop().replace(/\.[a-z]+$/, ""),
+                         condicion: cond, estrato: mapa[codigo] || codigo, ruta: ruta });
+          });
+        });
       });
-    });
+    } else {
+      m.conjuntos.forEach(function (c) {
+        Object.keys(c.imagenes).forEach(function (cond) {
+          todas.push({ conjunto: c.id, condicion: cond, ruta: c.imagenes[cond] });
+        });
+      });
+    }
     // Un juez no ve dos versiones de la misma identidad: evita comparaciones explícitas
     // y elimina la dependencia entre valoraciones del mismo conjunto.
-    POR_JUEZ = Math.min(MAX_POR_JUEZ, m.conjuntos.length);
+    POR_JUEZ = Math.min(MAX_POR_JUEZ,
+      m.estructura === "anidada" ? todas.length : m.conjuntos.length);
     var vistos = {}, sel = [];
     barajar(todas).forEach(function (x) {
       if (sel.length < POR_JUEZ && !vistos[x.conjunto]) { vistos[x.conjunto] = 1; sel.push(x); }

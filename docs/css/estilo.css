@@ -92,6 +92,9 @@ a  { color: var(--acento); }
 /* escalas */
 .escala { margin: .8rem 0 .4rem; position: relative; }
 .escala input[type=range] { width: 100%; accent-color: var(--acento); height: 1.6rem; }
+/* Mientras no se toca, ni el pulgar ni el relleno de la barra deben sugerir
+   una posición: un relleno hasta la mitad ancla las respuestas en el centro. */
+.escala input[type=range].sin-tocar { accent-color: var(--linea); }
 .escala input[type=range].sin-tocar::-webkit-slider-thumb { opacity: 0; }
 .escala input[type=range].sin-tocar::-moz-range-thumb { opacity: 0; }
 .anclas { display: flex; justify-content: space-between; gap: 1rem; color: var(--suave); font-size: .85rem; }

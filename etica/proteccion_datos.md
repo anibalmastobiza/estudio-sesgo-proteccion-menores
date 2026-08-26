@@ -6,7 +6,7 @@
 |---|---|---|
 | Respuestas a los ítems | Análisis | No |
 | Latencias por pantalla | Control de calidad | No |
-| Condición y conjunto asignados | Análisis | No |
+| Casilla del diseño y cara asignada | Análisis | No |
 | Resolución de pantalla, tipo de dispositivo | Control de calidad | No |
 | Zona horaria e idioma del navegador | Comprobación de residencia declarada | No |
 | Identificador aleatorio (UUID) | Vincular envío parcial y final | No |
@@ -40,8 +40,10 @@ alternativa autoalojada.
 3. **Ocultación parcial del objetivo.** Imprescindible para la validez.
    Mitigación: debriefing completo y derecho de retirada posterior al debriefing,
    sin coste para el participante.
-4. **Uso indebido de los estímulos.** Rostros sintéticos de apariencia infantil.
-   Mitigación en `estimulos/README.md`.
+4. **Uso indebido de los estímulos.** Rostros sintéticos de apariencia
+   adolescente. No se generan en este proyecto: proceden de AI-Faces by Illinois,
+   una base publicada y revisada, bajo CC BY-NC 4.0. No se redistribuyen en el
+   repositorio; el script los reconstruye desde OSF.
 5. **Malinterpretación pública de los resultados.** Un efecto medio de grupo no
    permite inferir el sesgo de ningún individuo. Mitigación: declararlo en el
    debriefing, en el resumen divulgativo y en cualquier nota de prensa.

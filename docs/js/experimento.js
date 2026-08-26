@@ -56,39 +56,44 @@
   /* ------------------------------------------------- asignación aleatoria */
 
   function asignar() {
-    D.condicion = elegir(C.CONDICIONES);
-    var alternativas = C.CONDICIONES.filter(function (x) { return x !== D.condicion; });
-    D.condicion_2 = elegir(alternativas);
+    // Diseño 2 x 2 entre participantes: fenotipo por expresión. Cada persona ve
+    // UNA sola cara. Las cuatro casillas se sortean con igual probabilidad, y la
+    // cara concreta se sortea dentro de la casilla.
+    var condiciones = (C.VARIANTE === "foto" && manifiesto.condiciones)
+      ? manifiesto.condiciones : C.CONDICIONES;
+
+    D.condicion = elegir(condiciones);
 
     if (C.VARIANTE === "foto") {
-      var conjunto = elegir(manifiesto.conjuntos);
-      D.conjunto = conjunto.id;
-      D.estimulo_1 = conjunto.imagenes[D.condicion];
-      D.estimulo_2 = conjunto.imagenes[D.condicion_2];
       D.version_estimulos = manifiesto.version;
+      D.expresion = elegir(manifiesto.expresiones);
+      var pool = manifiesto.caras[D.condicion][D.expresion];
+      D.estimulo_1 = elegir(pool);
+      D.cara = D.estimulo_1.split("/").pop().replace(/\.[a-z]+$/, "");
+      D.conjunto = D.cara;
+      D.codigo_expresion = D.cara.split("_")[3];
     } else {
       var k = Math.floor(Math.random() * C.NOMBRES[D.condicion].length);
       D.conjunto = "N" + (k + 1);
+      D.cara = D.conjunto;
       D.nombre_1 = C.NOMBRES[D.condicion][k];
-      D.nombre_2 = C.NOMBRES[D.condicion_2][k];
+      D.expresion = "";
       D.version_estimulos = "nombres-1.0";
     }
   }
 
   /* ------------------------------------------------------- componentes */
 
-  function pintaEstimulo(cual) {
+  function pintaEstimulo() {
     if (C.VARIANTE !== "foto") return "";
-    var src = C.RUTA_ESTIMULOS + (cual === 2 ? D.estimulo_2 : D.estimulo_1);
-    return '<figure class="estimulo"><img src="' + esc(src) +
+    return '<figure class="estimulo"><img src="' + esc(C.RUTA_ESTIMULOS + D.estimulo_1) +
            '" alt="Fotografía de un chico adolescente"></figure>';
   }
 
-  function textoVinyeta(cual) {
+  function textoVinyeta() {
     var base = (C.VARIANTE === "nombre") ? I.vinyeta_nombre : I.vinyeta;
-    var nombre = cual === 2 ? D.nombre_2 : D.nombre_1;
     return base.map(function (p) {
-      return "<p>" + esc(p).replace("{NOMBRE}", "<strong>" + esc(nombre) + "</strong>") + "</p>";
+      return "<p>" + esc(p).replace("{NOMBRE}", "<strong>" + esc(D.nombre_1) + "</strong>") + "</p>";
     }).join("");
   }
 
@@ -220,7 +225,7 @@
       borrador +
       '<h1>¿Cambia la decisión si cambia la cara?</h1>' +
       '<p class="entradilla">Un estudio de la Universidad sobre cómo decidimos qué hacer ' +
-      'cuando un menor pide ayuda. Dura unos <strong>5 minutos</strong>.</p>' +
+      'cuando un menor pide ayuda. Dura unos <strong>3 minutos</strong>.</p>' +
       '<div class="ficha">' +
         '<h2>Antes de empezar</h2>' +
         '<ul>' +
@@ -258,7 +263,7 @@
   /* 3. bloque 0: percepción del estímulo (antes de la viñeta) */
   function pRostro() {
     if (C.VARIANTE !== "foto") { pCaso(); return; }
-    mostrar('<h2>Este es el chico</h2>' + pintaEstimulo(1) +
+    mostrar('<h2>Este es el chico</h2>' + pintaEstimulo() +
             I.bloque0.map(htmlItem).join("") + botonSiguiente(), "rostro");
     bloquearBoton(C.EXPOSICION_MINIMA_S);
     alSiguiente("rostro", pCaso);
@@ -279,8 +284,8 @@
 
   /* 4. bloque 1: el caso y la decisión */
   function pCaso() {
-    mostrar('<h2>El caso</h2>' + pintaEstimulo(1) +
-            '<div class="vinyeta">' + textoVinyeta(1) + "</div>" +
+    mostrar('<h2>El caso</h2>' + pintaEstimulo() +
+            '<div class="vinyeta">' + textoVinyeta() + "</div>" +
             I.bloque1.map(htmlItem).join("") + botonSiguiente(), "caso");
     alSiguiente("caso", pAtencion);
   }
@@ -290,39 +295,25 @@
     mostrar("<h2>Una comprobación</h2>" + htmlItem(I.atencion) + botonSiguiente(), "atencion");
     alSiguiente("atencion", function () {
       D.atencion_ok = (D.control_atencion === I.atencion.correcta);
-      C.BLOQUE_REVELACION ? pRevelacion() : pModeradores();
+      pModeradores();
     });
   }
 
-  /* 6. bloque 2: revelación intrasujeto */
-  function pRevelacion() {
-    var intro = (C.VARIANTE === "foto")
-      ? esc(I.revelacion_intro)
-      : esc(I.revelacion_intro_nombre).replace("{NOMBRE}", "<strong>" + esc(D.nombre_2) + "</strong>");
-    mostrar("<h2>El mismo caso</h2>" +
-            '<p class="entradilla">' + intro + "</p>" +
-            pintaEstimulo(2) +
-            '<div class="vinyeta">' + textoVinyeta(2) + "</div>" +
-            I.bloque2.map(htmlItem).join("") + botonSiguiente(), "revelacion");
-    alSiguiente("revelacion", pModeradores);
-  }
-
-  /* 7. moderadores */
+  /* 6. moderadores */
   function pModeradores() {
     mostrar("<h2>Y ahora, sobre ti</h2>" +
-            '<p class="entradilla">Nueve frases. Marca en cada una lo cerca que estás de estar de acuerdo.</p>' +
             I.moderadores.map(htmlItem).join("") + botonSiguiente(), "moderadores");
     alSiguiente("moderadores", pDemografia);
   }
 
-  /* 8. demografía */
+  /* 7. demografía */
   function pDemografia() {
     mostrar("<h2>Casi está</h2>" + I.demografia.map(htmlItem).join("") +
             botonSiguiente(), "demografia");
     alSiguiente("demografia", pCierre);
   }
 
-  /* 9. cierre y control de calidad */
+  /* 8. cierre y control de calidad */
   function pCierre() {
     mostrar("<h2>Dos últimas</h2>" + I.cierre.map(htmlItem).join("") +
             botonSiguiente("Terminar"), "cierre");
@@ -335,24 +326,27 @@
     });
   }
 
-  /* 10. debriefing */
+  /* 9. debriefing */
   function pDebriefing() {
-    var comparadas = { no_racializado: "un chico de aspecto español",
+    var comparadas = { no_racializado: "un chico blanco",
                        magrebi: "un chico de aspecto magrebí",
-                       subsahariano: "un chico de aspecto subsahariano" };
+                       subsahariano: "un chico negro" };
     var comparadasN = { no_racializado: "un nombre español",
                         magrebi: "un nombre magrebí",
                         subsahariano: "un nombre del África occidental" };
-    var mio = (C.VARIANTE === "foto" ? comparadas : comparadasN)[D.condicion];
+    var expr = { afligido: "con cara de disgusto", contento: "sonriendo" };
+    var mio = (C.VARIANTE === "foto" ? comparadas : comparadasN)[D.condicion] +
+              (C.VARIANTE === "foto" && expr[D.expresion] ? ", " + expr[D.expresion] : "");
 
     mostrar("<h1>Gracias. Esto es lo que estudiábamos</h1>" +
       '<div class="ficha">' +
       "<p>El caso que has leído es <strong>exactamente el mismo</strong> para todo el mundo: " +
       "las mismas palabras, la misma situación, la misma edad. Lo único que cambiaba entre participantes " +
-      "era " + (C.VARIANTE === "foto" ? "la foto del chico" : "el nombre del chico") +
+      "era " + (C.VARIANTE === "foto" ? "la foto del chico: su aspecto y su cara" : "el nombre del chico") +
       ". A ti te tocó " + esc(mio) + ".</p>" +
-      "<p>Comparando las respuestas de los distintos grupos podemos medir si el aspecto o el origen " +
-      "atribuido a un menor cambia la protección que la gente considera adecuada, aunque el caso sea idéntico. " +
+      "<p>Hay cuatro grupos: chico blanco o chico negro, y cara de disgusto o cara contenta. " +
+      "Comparando los cuatro podemos separar tres cosas que suelen ir mezcladas: cuánto pesa el " +
+      "aspecto del chico, cuánto pesa la cara que pone, y si una cosa depende de la otra. " +
       "No te lo dijimos antes porque saberlo habría cambiado tus respuestas.</p>" +
       "<p>Que tus respuestas vayan en una dirección u otra no dice nada sobre ti como persona: " +
       "el estudio no evalúa a nadie individualmente, solo compara promedios de grupos grandes.</p>" +
@@ -433,7 +427,23 @@
       .then(function (r) { return r.json(); })
       .then(function (j) {
         manifiesto = j;
-        if (/^0\.0-marcadores/.test(manifiesto.version) && !C.MODO_DEPURACION) {
+        // En estructura anidada, `caras[condicion]` es un objeto indexado por
+        // código de expresión. No sirve si falta algún código en alguna
+        // condición: la aplicación no podría emparejar la expresión.
+        var vacio;
+        if (manifiesto.estructura === "anidada") {
+          vacio = !manifiesto.caras || !manifiesto.condiciones;
+          if (!vacio) {
+            var cods0 = Object.keys(manifiesto.caras[manifiesto.condiciones[0]] || {});
+            vacio = !cods0.length || manifiesto.condiciones.some(function (c) {
+              var pe = manifiesto.caras[c];
+              return !pe || cods0.some(function (e) { return !pe[e] || !pe[e].length; });
+            });
+          }
+        } else {
+          vacio = !manifiesto.conjuntos || !manifiesto.conjuntos.length;
+        }
+        if ((/^0\.0-marcadores/.test(manifiesto.version) || vacio) && !C.MODO_DEPURACION) {
           app.innerHTML = "<h1>Estímulos sin instalar</h1><p>El manifiesto todavía apunta a " +
             "marcadores de posición, no a estímulos reales. Sustituye las imágenes de " +
             "<code>docs/estimulos/</code>, actualiza <code>version</code> en " +

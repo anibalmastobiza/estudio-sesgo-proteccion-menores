@@ -18,22 +18,18 @@ var HOJA = "respuestas";
 // Orden canónico de columnas. Las claves no listadas se añaden al final.
 var CABECERAS = [
   "id", "recibido_iso", "parcial", "completado", "abandonos", "pantalla_actual",
-  "version_protocolo", "version_estimulos", "variante",
-  "condicion", "condicion_2", "conjunto", "estimulo_1", "estimulo_2", "nombre_1", "nombre_2",
+  "version_protocolo", "version_estimulos", "variante", "estructura",
+  "condicion", "expresion", "codigo_expresion", "cara", "conjunto", "estimulo_1", "nombre_1",
   "consentimiento",
-  "edad_percibida", "origen_atribuido", "nacionalidad_atribuida",
-  "decision", "orden_decision", "proteccion", "devolucion", "garantias",
-  "credibilidad", "responsabilidad", "peligro", "dias_evaluacion",
+  "emocion_percibida", "edad_percibida", "origen_atribuido",
+  "decision", "orden_decision", "proteccion", "devolucion", "credibilidad", "peligro",
   "control_atencion", "atencion_ok",
-  "proteccion_2", "devolucion_2", "cambio_declarado",
-  "ideologia", "contacto",
-  "sdo_1", "sdo_2", "sdo_3", "sdo_4",
-  "prejuicio_1", "prejuicio_2", "amenaza",
-  "edad", "genero", "estudios", "ccaa", "origen_propio", "racializado", "voto",
+  "ideologia", "contacto", "amenaza",
+  "edad", "genero", "ccaa", "racializado",
   "sospecha", "seriedad", "retirar",
   "inicio_iso", "fin_iso", "fin_debriefing_iso", "duracion_s",
   "t_portada", "t_instrucciones", "t_rostro", "t_caso", "t_atencion",
-  "t_revelacion", "t_moderadores", "t_demografia", "t_cierre",
+  "t_moderadores", "t_demografia", "t_cierre",
   "zona_horaria", "idioma_navegador", "pantalla", "tactil", "fuente"
 ];
 
@@ -76,8 +72,19 @@ function doPost(e) {
   }
 }
 
-function doGet() {
-  return respuesta_({ ok: true, servicio: "estudio-sesgo-proteccion-menores", filas: hoja_().getLastRow() - 1 });
+function doGet(e) {
+  var h = hoja_();
+  var cab = h.getRange(1, 1, 1, Math.max(1, h.getLastColumn())).getValues()[0]
+             .filter(function (x) { return x !== ""; });
+  return respuesta_({
+    ok: true,
+    servicio: "estudio-sesgo-proteccion-menores",
+    hoja: h.getName(),
+    columnas: cab.length,
+    filas: Math.max(0, h.getLastRow() - 1),
+    token_requerido: TOKEN !== "",
+    version: "1.1.0"
+  });
 }
 
 /* ------------------------------------------------------------- internas */
@@ -85,11 +92,20 @@ function doGet() {
 function hoja_() {
   var libro = SpreadsheetApp.getActiveSpreadsheet();
   var h = libro.getSheetByName(HOJA);
-  if (!h) {
+  if (h) return h;
+
+  // Si el libro tiene una sola pestaña, se reutiliza y se renombra. Esto evita
+  // acabar con una pestaña de cabeceras vacía al lado de la que recibe datos
+  // cuando el libro se ha creado subiendo un CSV.
+  var hojas = libro.getSheets();
+  if (hojas.length === 1) {
+    h = hojas[0];
+    h.setName(HOJA);
+  } else {
     h = libro.insertSheet(HOJA);
-    h.appendRow(CABECERAS);
-    h.setFrozenRows(1);
   }
+  if (h.getLastRow() === 0) h.appendRow(CABECERAS);
+  h.setFrozenRows(1);
   return h;
 }
 

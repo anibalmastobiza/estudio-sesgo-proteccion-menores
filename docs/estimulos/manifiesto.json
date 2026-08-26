@@ -1,78 +1,182 @@
 {
-  "version": "0.0-marcadores",
-  "aviso": "ESTOS ARCHIVOS NO SON ESTIMULOS. Son marcadores de posicion para poder probar la aplicacion. Sustituyelos por las imagenes reales, normativizadas y aprobadas por el comite de etica, manteniendo las mismas rutas o actualizando este manifiesto. Ver estimulos/README.md.",
+  "version": "1.0-aifaces",
+  "estructura": "anidada",
+  "nota": "Estímulos tomados de AI-Faces by Illinois (OSF vurm5, CC BY-NC 4.0), chicos con edad objetivo de 15 años. Las caras son identidades independientes, de modo que el estímulo va ANIDADO en la casilla del diseño. La expresión, en cambio, está CRUZADA con el fenotipo.",
+  "fuente": {
+    "nombre": "AI-Faces by Illinois",
+    "osf": "https://osf.io/vurm5/",
+    "licencia": "CC BY-NC 4.0",
+    "atribucion": "AI-Faces by Illinois, University of Illinois, OSF vurm5, CC BY-NC 4.0"
+  },
   "condiciones": [
     "no_racializado",
-    "magrebi",
     "subsahariano"
   ],
-  "n_conjuntos": 6,
-  "estructura": "Cada conjunto es una misma identidad facial generada en tres versiones fenotipicas mediante mezcla de estilos (style mixing). El conjunto es un factor aleatorio cruzado en el analisis.",
-  "campos_normativos_esperados": [
-    "origen_modal",
-    "prop_origen_modal",
-    "edad_percibida_M",
-    "edad_percibida_DT",
-    "atractivo_M",
-    "confiabilidad_M",
-    "expresion_neutra_prop",
-    "realismo_M",
-    "n_jueces"
+  "condicion_ausente": {
+    "magrebi": "Descartada. En la matriz normativa, solo 3 de las 18 caras de chicos etiquetadas como norteafricanas o de Oriente Medio son percibidas mayoritariamente como tales; 9 se perciben como blancas y 4 como latinas. El contraste magrebí se estudia con la variante de nombre."
+  },
+  "diseno": "2 x 2: fenotipo (no racializado, subsahariano) x expresion (afligido, contento)",
+  "expresiones": [
+    "afligido",
+    "contento"
   ],
-  "conjuntos": [
-    {
-      "id": "C01",
-      "imagenes": {
-        "no_racializado": "placeholder/C01_no_racializado.svg",
-        "magrebi": "placeholder/C01_magrebi.svg",
-        "subsahariano": "placeholder/C01_subsahariano.svg"
+  "composicion_por_codigo": {
+    "no_racializado": [
+      "a",
+      "a",
+      "a",
+      "f",
+      "s",
+      "s",
+      "s",
+      "s",
+      "s",
+      "s",
+      "s"
+    ],
+    "subsahariano": [
+      "a",
+      "a",
+      "a",
+      "f",
+      "s",
+      "s",
+      "s",
+      "s",
+      "s",
+      "s",
+      "s"
+    ]
+  },
+  "seleccion": {
+    "criterio_max_dif_emocion": 0.25,
+    "criterio_max_dif_resto": 0.6,
+    "variables_emparejadas": [
+      "feliz",
+      "triste",
+      "enfadado",
+      "edad",
+      "masc",
+      "real"
+    ],
+    "por_estrato": {
+      "afligido": {
+        "k": 4,
+        "dif_max_emocion": 0.162,
+        "dif_max_resto": 0.446,
+        "difs": {
+          "feliz": 0.025,
+          "triste": 0.16,
+          "enfadado": 0.162,
+          "edad": 0.268,
+          "masc": 0.446,
+          "real": 0.338
+        }
       },
-      "normativo": null
-    },
-    {
-      "id": "C02",
-      "imagenes": {
-        "no_racializado": "placeholder/C02_no_racializado.svg",
-        "magrebi": "placeholder/C02_magrebi.svg",
-        "subsahariano": "placeholder/C02_subsahariano.svg"
-      },
-      "normativo": null
-    },
-    {
-      "id": "C03",
-      "imagenes": {
-        "no_racializado": "placeholder/C03_no_racializado.svg",
-        "magrebi": "placeholder/C03_magrebi.svg",
-        "subsahariano": "placeholder/C03_subsahariano.svg"
-      },
-      "normativo": null
-    },
-    {
-      "id": "C04",
-      "imagenes": {
-        "no_racializado": "placeholder/C04_no_racializado.svg",
-        "magrebi": "placeholder/C04_magrebi.svg",
-        "subsahariano": "placeholder/C04_subsahariano.svg"
-      },
-      "normativo": null
-    },
-    {
-      "id": "C05",
-      "imagenes": {
-        "no_racializado": "placeholder/C05_no_racializado.svg",
-        "magrebi": "placeholder/C05_magrebi.svg",
-        "subsahariano": "placeholder/C05_subsahariano.svg"
-      },
-      "normativo": null
-    },
-    {
-      "id": "C06",
-      "imagenes": {
-        "no_racializado": "placeholder/C06_no_racializado.svg",
-        "magrebi": "placeholder/C06_magrebi.svg",
-        "subsahariano": "placeholder/C06_subsahariano.svg"
-      },
-      "normativo": null
+      "contento": {
+        "k": 7,
+        "dif_max_emocion": 0.104,
+        "dif_max_resto": 0.469,
+        "difs": {
+          "feliz": 0.001,
+          "triste": 0.104,
+          "enfadado": 0.04,
+          "edad": 0.425,
+          "masc": 0.469,
+          "real": 0.254
+        }
+      }
     }
-  ]
+  },
+  "regla_de_presentacion": "Cada participante ve UNA sola cara, sorteada entre las cuatro casillas del diseño con igual probabilidad. La expresión percibida se mide con un ítem propio.",
+  "normas": {
+    "no_racializado": {
+      "afligido": {
+        "edad": 14.91,
+        "masc": 6.21,
+        "real": 5.104,
+        "feliz": 1.384,
+        "triste": 3.355,
+        "enfadado": 5.538,
+        "majo": 2.378,
+        "rico": 3.536,
+        "rating_propio": 6.729
+      },
+      "contento": {
+        "edad": 13.484,
+        "masc": 6.179,
+        "real": 5.254,
+        "feliz": 6.355,
+        "triste": 1.293,
+        "enfadado": 1.194,
+        "majo": 5.746,
+        "rico": 4.524,
+        "rating_propio": 6.752
+      }
+    },
+    "subsahariano": {
+      "afligido": {
+        "edad": 14.521,
+        "masc": 6.371,
+        "real": 5.287,
+        "feliz": 1.445,
+        "triste": 3.11,
+        "enfadado": 5.21,
+        "majo": 2.877,
+        "rico": 3.378,
+        "rating_propio": 6.665
+      },
+      "contento": {
+        "edad": 14.101,
+        "masc": 6.348,
+        "real": 5.391,
+        "feliz": 6.359,
+        "triste": 1.134,
+        "enfadado": 1.113,
+        "majo": 5.891,
+        "rico": 4.099,
+        "rating_propio": 6.594
+      }
+    }
+  },
+  "n_caras": {
+    "no_racializado": 11,
+    "subsahariano": 11
+  },
+  "caras": {
+    "no_racializado": {
+      "afligido": [
+        "aifaces/w_b_15_a_001.png",
+        "aifaces/w_b_15_a_002.png",
+        "aifaces/w_b_15_a_004.png",
+        "aifaces/w_b_15_f_003.png"
+      ],
+      "contento": [
+        "aifaces/w_b_15_s_002.png",
+        "aifaces/w_b_15_s_003.png",
+        "aifaces/w_b_15_s_004.png",
+        "aifaces/w_b_15_s_006.png",
+        "aifaces/w_b_15_s_008.png",
+        "aifaces/w_b_15_s_009.png",
+        "aifaces/w_b_15_s_010.png"
+      ]
+    },
+    "subsahariano": {
+      "afligido": [
+        "aifaces/b_b_15_a_001.png",
+        "aifaces/b_b_15_a_003.png",
+        "aifaces/b_b_15_a_004.png",
+        "aifaces/b_b_15_f_004.png"
+      ],
+      "contento": [
+        "aifaces/b_b_15_s_002.png",
+        "aifaces/b_b_15_s_003.png",
+        "aifaces/b_b_15_s_005.png",
+        "aifaces/b_b_15_s_006.png",
+        "aifaces/b_b_15_s_008.png",
+        "aifaces/b_b_15_s_009.png",
+        "aifaces/b_b_15_s_010.png"
+      ]
+    }
+  }
 }

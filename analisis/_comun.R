@@ -22,7 +22,11 @@ fija_utf8()
 options(stringsAsFactors = FALSE, width = 100)
 
 # --- Constantes del protocolo -------------------------------------------------
-CONDICIONES <- c("no_racializado", "magrebi", "subsahariano")
+# Variante fotográfica: dos condiciones. No hay estímulos válidos para la
+# condición magrebí (ver estimulos/README.md), que se estudia con nombres.
+CONDICIONES_FOTO   <- c("no_racializado", "subsahariano")
+CONDICIONES_NOMBRE <- c("no_racializado", "magrebi", "subsahariano")
+CONDICIONES <- CONDICIONES_FOTO
 ETIQUETAS   <- c(no_racializado = "No racializado",
                  magrebi        = "Magrebí",
                  subsahariano   = "Subsahariano")
@@ -32,11 +36,20 @@ DURACION_MIN_S <- 90
 DURACION_MAX_S <- 3600
 
 # Familia confirmatoria: cinco contrastes con corrección de Holm.
+EXPRESIONES <- c("contento", "afligido")
+ETIQ_EXPR   <- c(contento = "Cara contenta", afligido = "Cara afligida")
+
+# Familia confirmatoria sobre el índice de protección y las tres respuestas
+# secundarias. La edad percibida queda fuera: las dos muestras de caras no están
+# perfectamente emparejadas en edad percibida normativa y el desajuste apunta en
+# la dirección de la hipótesis de adultificación, de modo que no se puede separar
+# el sesgo del participante del desajuste del estímulo.
 FAMILIA_H <- c(H1 = "indice_proteccion", H2 = "decision_devolucion",
-               H3 = "edad_percibida", H4 = "credibilidad", H5 = "peligro")
+               H3 = "credibilidad", H4 = "peligro")
 
 # Paleta accesible en escala de grises y para daltonismo.
 COLORES <- c(no_racializado = "#4C6EA8", magrebi = "#C4762E", subsahariano = "#3F8A70")
+COLOR_EXPR <- c(contento = "#7A9BC4", afligido = "#1c4b82")
 
 # --- Utilidades ---------------------------------------------------------------
 

@@ -27,7 +27,7 @@ Rscript analisis/03_figuras.R
 | `_comun.R` | | Locale UTF-8, constantes del protocolo, utilidades. Lo cargan los demás. |
 | `00_simular_datos.R` | | `datos/simulados.csv` con la misma estructura de columnas que la hoja real |
 | `descargar_sheets.R` | URL del CSV publicado | `datos/respuestas.csv` y una copia fechada |
-| `01_preparar.R` | CSV | `datos/preparados.rds`, `salida/exclusiones.csv`, `salida/descriptivos.csv` |
+| `01_preparar.R` | CSV | `datos/preparados.rds`, `salida/exclusiones.csv`, `salida/descriptivos.csv`, comprobaciones de la manipulación |
 | `02_analisis_principal.R` | `preparados.rds` | `salida/resultados_confirmatorios.csv` y salida por consola |
 | `03_figuras.R` | `preparados.rds` y resultados | `figuras/*.png` y `figuras/*.pdf` |
 
@@ -38,9 +38,21 @@ el signo y la magnitud correctos, el pipeline funciona. Escribir y depurar el
 análisis con datos simulados evita la tentación de ajustar decisiones analíticas
 después de ver los resultados reales.
 
-Los efectos inyectados están declarados en la cabecera del script: protección
--6 puntos, devolución +8, edad percibida +1.1 años, credibilidad -5, sospecha de
-delito +7. La comprobación es que `02_analisis_principal.R` los devuelva.
+Los efectos inyectados están declarados en la cabecera del script: sobre el
+índice de protección, fenotipo -6 puntos, expresión afligida +5 e interacción -3.
+La comprobación es que `02_analisis_principal.R` devuelva los dos primeros.
+
+El de interacción **no** se recupera, y eso también es la comprobación esperada:
+la simulación de potencia dice que con 22 caras una interacción de ese tamaño se
+detecta menos de una vez de cada cinco. Si algún día se recuperase con esta
+muestra y este material, habría que sospechar del pipeline.
+
+Con la semilla fija del script (20260826) el efecto de fenotipo sobre
+`credibilidad` sale en +0.2 en lugar de -5. No es un fallo: repitiendo la
+simulación con doce semillas distintas el efecto medio es -4.6, que es lo
+inyectado. Esa casilla concreta cayó a unos tres errores típicos de su valor
+esperado. Se deja la semilla como está: cambiarla para que la demostración salga
+más redonda es exactamente el hábito que el preregistro existe para impedir.
 
 ## Paquetes
 

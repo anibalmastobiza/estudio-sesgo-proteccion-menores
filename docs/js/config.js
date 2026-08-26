@@ -8,12 +8,14 @@ window.CONFIG = {
   // Debe coincidir con TOKEN en Codigo.gs. Vacío = sin comprobación.
   TOKEN: "",
 
-  // "foto"   : la manipulación es la imagen del menor (diseño principal).
+  // "foto"   : diseño 2 x 2, fenotipo del menor por expresión de su cara.
   // "nombre" : la manipulación es el nombre propio del menor (variante ejecutable
   //            sin estímulos visuales; se preregistra por separado).
-  VARIANTE: "nombre",
+  VARIANTE: "foto",
 
-  // Condiciones. El orden fija los niveles del factor en el análisis.
+  // Condiciones de la variante "nombre". En variante "foto" mandan las que
+  // declare docs/estimulos/manifiesto.json, que hoy son dos: no hay estímulos
+  // fotográficos válidos para la condición magrebí (ver estimulos/README.md).
   CONDICIONES: ["no_racializado", "magrebi", "subsahariano"],
 
   // Nombres usados en VARIANTE = "nombre".
@@ -25,9 +27,6 @@ window.CONFIG = {
 
   RUTA_ESTIMULOS: "estimulos/",
   MANIFIESTO: "estimulos/manifiesto.json",
-
-  // Bloque 2: réplica intrasujeto con la cara alternativa (lógica del hilo original).
-  BLOQUE_REVELACION: true,
 
   // Segundos mínimos de exposición al estímulo antes de poder avanzar.
   EXPOSICION_MINIMA_S: 3,
@@ -42,5 +41,5 @@ window.CONFIG = {
   // `?v=` en las etiquetas <script> de index.html y norming.html. Sin eso, los
   // navegadores que ya hayan visitado la página pueden seguir con la versión
   // anterior durante el tiempo de caché.
-  VERSION_PROTOCOLO: "1.0.0"
+  VERSION_PROTOCOLO: "2.0.0"
 };

@@ -10,13 +10,17 @@ de referencia para el comité de ética.*
 
 El caso que ha leído es exactamente el mismo para todo el mundo: las mismas
 palabras, la misma situación, la misma edad. Lo único que cambiaba entre
-participantes era la fotografía del chico. A usted le tocó [condición asignada].
+participantes era la fotografía del chico: su aspecto y la cara que pone. A
+usted le tocó [casilla asignada].
 
-Comparando las respuestas de los distintos grupos podemos medir si el aspecto o
-el origen que se atribuye a un menor cambia la protección que la gente considera
-adecuada, aunque el caso sea idéntico. No se lo dijimos antes porque saberlo
-habría cambiado sus respuestas, y con ello habría desaparecido lo que
-queríamos medir.
+Hay cuatro grupos: chico blanco o chico negro, y cara contenta o cara afligida.
+Comparando los cuatro podemos separar tres cosas que suelen ir mezcladas: cuánto
+pesa el aspecto del chico, cuánto pesa la cara que pone, y si una cosa depende de
+la otra. No se lo dijimos antes porque saberlo habría cambiado sus respuestas, y
+con ello habría desaparecido lo que queríamos medir.
+
+Las fotografías no corresponden a ninguna persona real: están generadas por
+ordenador y proceden de una base abierta para investigación.
 
 Que sus respuestas vayan en una dirección u otra no dice nada sobre usted como
 persona. El estudio no evalúa a nadie individualmente y no calcula ninguna

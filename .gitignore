@@ -6,14 +6,11 @@ analisis/salida/
 # se confundirían con resultados reales.
 analisis/figuras/
 
-# Estímulos: se distribuyen aparte, con su licencia y su acuerdo de uso.
-docs/estimulos/*.png
-docs/estimulos/*.jpg
-docs/estimulos/*.jpeg
+# Las imágenes originales de OSF, sin procesar, pesan 40 MB y las reconstruye
+# `estimulos/preparar_aifaces.py`. Las procesadas de docs/estimulos/aifaces/ SÍ
+# van al repositorio: sin ellas la aplicación no funciona.
 estimulos/crudo/
-estimulos/final/
 estimulos/salida/
-!docs/estimulos/placeholder/
 
 # Credenciales
 *.env

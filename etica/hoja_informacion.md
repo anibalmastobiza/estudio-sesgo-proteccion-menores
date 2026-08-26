@@ -12,7 +12,7 @@
 ## Qué le pedimos
 
 Leer la descripción breve de un caso y dar su opinión sobre qué debería ocurrir.
-Después responderá algunas preguntas sobre usted. En total, unos cinco minutos.
+Después responderá algunas preguntas sobre usted. En total, unos tres minutos.
 
 ## Por qué le informamos de forma incompleta
 
@@ -25,7 +25,7 @@ respuestas. Esa decisión no afecta a su compensación.
 ## Qué datos recogemos
 
 Sus respuestas, el tiempo que tarda en cada pantalla, el tamaño de su pantalla y
-la condición experimental que le ha tocado. No recogemos su nombre, su correo
+la casilla experimental que le ha tocado. No recogemos su nombre, su correo
 electrónico ni su dirección IP. No podemos identificarle a partir de los datos
 que guardamos.
 
