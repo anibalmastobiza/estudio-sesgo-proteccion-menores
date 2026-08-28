@@ -363,8 +363,8 @@
       "<p><strong>Marco legal.</strong> En España, la Ley Orgánica 1/1996 de Protección Jurídica del Menor " +
       "obliga a actuar en interés superior del menor con independencia de su nacionalidad.</p>" +
       "</div>" +
-      '<p class="entradilla">Gracias por participar. Ya puedes cerrar esta pestaña.</p>' +
-      '<p id="estado" class="estado">Enviando respuestas…</p>' +
+      '<p class="entradilla">Gracias por participar.</p>' +
+      '<p id="estado" class="estado">Guardando respuestas. No cierres todavía…</p>' +
       "<p>Si quieres los resultados cuando estén publicados, escribe a " +
       '<a href="mailto:' + esc(C.CONTACTO) + '">' + esc(C.CONTACTO) + "</a>.</p>" +
       "<p>" + esc(C.INVESTIGADOR) + ", " + esc(C.INSTITUCION) + ".</p>", "debriefing");
@@ -390,7 +390,7 @@
     }).then(function (r) { return r.text(); })
       .then(function () {
         try { localStorage.removeItem("respuesta_" + D.id); } catch (e) {}
-        var e2 = $("#estado"); if (e2) e2.textContent = "Respuestas guardadas.";
+        var e2 = $("#estado"); if (e2) e2.textContent = "Respuestas guardadas. Ya puedes cerrar esta pestaña.";
       })
       .catch(function () {
         if (navigator.sendBeacon) navigator.sendBeacon(C.ENDPOINT, new Blob([cuerpo], { type: "text/plain" }));
