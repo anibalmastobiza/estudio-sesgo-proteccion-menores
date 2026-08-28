@@ -188,6 +188,12 @@ button.principal {
   background: var(--acento); color: var(--acento-txt);
   border: 0; border-radius: 8px; padding: .85rem 1rem; cursor: pointer;
 }
+button.principal.boton-final {
+  display: block;
+  width: 100%; max-width: 28rem;
+  margin: 2rem auto 0;
+  font-size: 1.05rem;
+}
 button.principal:disabled { opacity: .45; cursor: default; }
 button.principal:hover:not(:disabled) { filter: brightness(1.08); }
 
