@@ -320,7 +320,7 @@
   /* 8. cierre y control de calidad */
   function pCierre() {
     mostrar("<h2>Dos últimas</h2>" + I.cierre.map(htmlItem).join("") +
-            botonSiguiente("Terminar"), "cierre");
+            '<button id="siguiente" class="principal boton-final">Finalizar y enviar respuestas</button>', "cierre");
     alSiguiente("cierre", function () {
       D.completado = true;
       D.fin_iso = new Date().toISOString();
@@ -363,18 +363,11 @@
       "<p><strong>Marco legal.</strong> En España, la Ley Orgánica 1/1996 de Protección Jurídica del Menor " +
       "obliga a actuar en interés superior del menor con independencia de su nacionalidad.</p>" +
       "</div>" +
-      '<button id="siguiente" class="principal boton-final">Finalizar y enviar respuestas</button>' +
-      '<p id="estado" class="estado"></p>', "debriefing");
-
-    $("#siguiente").addEventListener("click", function () {
-      recoger(app);
-      D.fin_debriefing_iso = new Date().toISOString();
-      enviar(false);
-      mostrar("<h1>Listo</h1><p class=\"entradilla\">Gracias por participar. Ya puedes cerrar la pestaña.</p>" +
-              "<p>Si quieres los resultados cuando estén publicados, escribe a " +
-              '<a href="mailto:' + esc(C.CONTACTO) + '">' + esc(C.CONTACTO) + "</a>.</p>" +
-              "<p>" + esc(C.INVESTIGADOR) + ", " + esc(C.INSTITUCION) + ".</p>", "final");
-    });
+      '<p class="entradilla">Gracias por participar. Ya puedes cerrar esta pestaña.</p>' +
+      '<p id="estado" class="estado">Enviando respuestas…</p>' +
+      "<p>Si quieres los resultados cuando estén publicados, escribe a " +
+      '<a href="mailto:' + esc(C.CONTACTO) + '">' + esc(C.CONTACTO) + "</a>.</p>" +
+      "<p>" + esc(C.INVESTIGADOR) + ", " + esc(C.INSTITUCION) + ".</p>", "debriefing");
   }
 
   /* ------------------------------------------------------------- envío */
