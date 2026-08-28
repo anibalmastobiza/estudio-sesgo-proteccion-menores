@@ -325,7 +325,7 @@
       D.completado = true;
       D.fin_iso = new Date().toISOString();
       D.duracion_s = Math.round((new Date(D.fin_iso) - new Date(D.inicio_iso)) / 1000);
-      enviar(true);
+      enviar(false);
       pDebriefing();
     });
   }
