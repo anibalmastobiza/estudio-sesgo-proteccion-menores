@@ -363,12 +363,6 @@
       "<p><strong>Marco legal.</strong> En España, la Ley Orgánica 1/1996 de Protección Jurídica del Menor " +
       "obliga a actuar en interés superior del menor con independencia de su nacionalidad.</p>" +
       "</div>" +
-      '<div class="item" data-id="retirar" data-tipo="opcion" data-opcional="1">' +
-        '<p class="enunciado">Ahora que lo sabes, ¿quieres que borremos tus respuestas?</p>' +
-        '<div class="opciones">' +
-          '<label class="opcion"><input type="radio" name="retirar" value="no"><span>No, podéis usarlas</span></label>' +
-          '<label class="opcion"><input type="radio" name="retirar" value="si"><span>Sí, borradlas</span></label>' +
-        '</div><p class="aviso" hidden>Contesta para poder seguir.</p></div>' +
       '<button id="siguiente" class="principal">Enviar y cerrar</button>' +
       '<p id="estado" class="estado"></p>', "debriefing");
 
